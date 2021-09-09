@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "543272594161",
+    "project_id": "carteiramedica-ce205",
+    "storage_bucket": "carteiramedica-ce205.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:543272594161:android:1ae72eaf5ab900b5665750",
+        "android_client_info": {
+          "package_name": "com.example.carteiramedapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "543272594161-o5ud1c1e4sfqi70pbnnnm7rfpnuo284c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8ig5JOBBBvUuWgV5zRDAmuPFKW99HR9o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "543272594161-o5ud1c1e4sfqi70pbnnnm7rfpnuo284c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
