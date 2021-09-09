@@ -89,17 +89,17 @@ class _UserInfoFormState extends State<UserInfoForm> {
                     children: [
                       SizedBox(height: 20),
                       UserInfoFormTextField(
-                          'CPF', _nameController, thisUser.name),
+                          'Nome', _nameController, thisUser.name),
                       SizedBox(height: 10),
                       UserInfoFormTextField(
-                          'E-mail', _emailController, thisUser.email),
+                          'CPF', _cpfController, thisUser.cpf),
                     ],
                   ),
                 ),
               ],
             ),
             SizedBox(height: 10),
-            UserInfoFormTextField('Nome', _cpfController, thisUser.cpf),
+            UserInfoFormTextField('E-mail', _emailController, thisUser.email),
           ],
         ),
       ),

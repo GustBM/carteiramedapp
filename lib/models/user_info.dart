@@ -20,4 +20,31 @@ class UserInfo {
     this.conditions = const [],
     this.vaccines = const [],
   });
+
+  UserInfo.fromJson(Map<String, Object?> json)
+      : this(
+          id: json['id']! as String,
+          cpf: json['cpf'] as String,
+          name: json['name']! as String,
+          birthDate: json['birthDate'] as String,
+          email: json['email'] as String,
+          imageUrl: json['imageUrl'] as String,
+          medications: (json['medications']! as List<dynamic>).cast<String>(),
+          conditions: (json['conditions']! as List<dynamic>).cast<String>(),
+          vaccines: (json['vaccines']! as List<dynamic>).cast<String>(),
+        );
+
+  Map<String, Object?> toJson() {
+    return {
+      'id': id,
+      'cpf': cpf,
+      'name': name,
+      'birthDate': birthDate,
+      'email': email,
+      'imageUrl': imageUrl,
+      'medications': medications,
+      'conditions': conditions,
+      'vaccines': vaccines,
+    };
+  }
 }
