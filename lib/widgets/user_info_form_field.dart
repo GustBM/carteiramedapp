@@ -29,7 +29,7 @@ class UserInfoFormTextField extends StatelessWidget {
       ),
       textInputAction: TextInputAction.done,
       validator: (value) {
-        if (value!.isEmpty) return 'Preencha o campo com o nome da atividade.';
+        if (value!.isEmpty) return 'Este campo é obrigatório.';
         return null;
       },
       controller: formController,

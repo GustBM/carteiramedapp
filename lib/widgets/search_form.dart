@@ -49,11 +49,13 @@ class _SearchFormState extends State<SearchForm> {
           children: [
             TextFormField(
               decoration: InputDecoration(
-                  labelText: 'Busque CPF ou E-mail', alignLabelWithHint: false),
+                  labelText: 'Busque por CPF ou E-mail',
+                  alignLabelWithHint: false),
               textInputAction: TextInputAction.done,
+              textAlign: TextAlign.center,
               validator: (value) {
                 if (value!.isEmpty)
-                  return 'Preencha o campo com o nome da atividade.';
+                  return 'Preencha o campo com o CPF ou e-mail.';
                 return null;
               },
               controller: _inputController,

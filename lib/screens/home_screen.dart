@@ -1,4 +1,5 @@
 import 'package:carteiramedapp/screens/user_info_screen.dart';
+import 'package:carteiramedapp/widgets/login_dialog_widget.dart';
 import 'package:flutter/material.dart';
 
 import 'package:carteiramedapp/widgets/search_form.dart';
@@ -17,7 +18,11 @@ class HomeScreen extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.person),
           onPressed: () {
-            Navigator.of(context).pushNamed(UserInfoScreen.routeName);
+            // Navigator.of(context).pushNamed(UserInfoScreen.routeName);
+            showDialog<Widget>(
+              context: context,
+              builder: (_) => new LoginDialog(),
+            );
           },
         ),
       ),
@@ -48,6 +53,7 @@ class HomeScreen extends StatelessWidget {
                     Text(
                       'Bem-vindo a Carteira Médica',
                       style: Theme.of(context).textTheme.headline4,
+                      textAlign: TextAlign.center,
                     ),
                     SizedBox(height: 20),
                     SearchForm(),
