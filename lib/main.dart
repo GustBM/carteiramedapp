@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
@@ -5,9 +6,13 @@ import 'package:provider/provider.dart';
 import 'package:carteiramedapp/screens/home_screen.dart';
 import 'package:carteiramedapp/screens/new_user_screen.dart';
 import 'package:carteiramedapp/screens/user_info_screen.dart';
+import 'package:carteiramedapp/screens/splash_screen.dart';
+import 'package:carteiramedapp/providers/auth.dart';
 import 'package:carteiramedapp/providers/users_info.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(CarteiraMedApp());
 }
 
@@ -32,10 +37,15 @@ MaterialColor createMaterialColor(Color color) {
 }
 
 class CarteiraMedApp extends StatelessWidget {
+  final Future<FirebaseApp> _fbApp = Firebase.initializeApp();
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider.value(
+          value: Auth(),
+        ),
         ChangeNotifierProvider.value(
           value: UsersInfo(),
         ),
@@ -62,7 +72,18 @@ class CarteiraMedApp extends StatelessWidget {
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate
         ],
-        home: HomeScreen(),
+        home: FutureBuilder(
+            future: _fbApp,
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                print('Erro! ${snapshot.error.toString()}');
+                return Text("Houve um erro na conexão com o banco!");
+              } else if (snapshot.hasData) {
+                return HomeScreen();
+              } else {
+                return SplashScreen();
+              }
+            }),
         routes: {
           HomeScreen.routeName: (ctx) => HomeScreen(),
           UserInfoScreen.routeName: (ctx) => UserInfoScreen(),

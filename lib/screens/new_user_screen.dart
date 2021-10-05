@@ -1,12 +1,22 @@
+import 'package:carteiramedapp/models/http_exception.dart';
+import 'package:carteiramedapp/models/user_info.dart';
+import 'package:carteiramedapp/providers/auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:carteiramedapp/widgets/user_info/user_info_form_datefield.dart';
+import 'package:carteiramedapp/widgets/user_info/user_info_form_list.dart';
 import 'package:carteiramedapp/widgets/user_info/user_info_form_textfield.dart';
+import 'package:provider/provider.dart';
 
-class NewUserScreen extends StatelessWidget {
+class NewUserScreen extends StatefulWidget {
   static const routeName = '/new-user';
   const NewUserScreen({Key? key}) : super(key: key);
 
+  @override
+  _NewUserScreenState createState() => _NewUserScreenState();
+}
+
+class _NewUserScreenState extends State<NewUserScreen> {
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> _registerForm = GlobalKey();
@@ -14,42 +24,163 @@ class NewUserScreen extends StatelessWidget {
     final TextEditingController _emailController = TextEditingController();
     final TextEditingController _cpfController = TextEditingController();
     final TextEditingController _bthdayController = TextEditingController();
+    final TextEditingController _pwdController = TextEditingController();
+    final TextEditingController _confirmPwdController = TextEditingController();
+    List<String> _medications = [];
+    List<String> _conditions = [];
+    List<String> _vaccines = [];
+
+    var _isLoading = false;
+
+    Future<void> _submit() async {
+      if (!_registerForm.currentState!.validate()) {
+        // Invalid!
+        return;
+      }
+      _registerForm.currentState!.save();
+      setState(() {
+        _isLoading = true;
+      });
+      try {
+        await Provider.of<Auth>(context, listen: false).newUser(
+            new UserInf(
+                cpf: _cpfController.text,
+                name: _nameController.text,
+                birthDate: _bthdayController.text,
+                email: _emailController.text,
+                medications: _medications,
+                vaccines: _vaccines,
+                conditions: _conditions),
+            _pwdController.text);
+      } on HttpException catch (e) {
+        print('HttpException' + e.toString());
+      } catch (e) {
+        print('Error' + e.toString());
+      }
+      setState(() {
+        _isLoading = false;
+      });
+    }
 
     return Scaffold(
       appBar: AppBar(),
       body: Container(
+        // decoration: BoxDecoration(
+        //   gradient: LinearGradient(
+        //     colors: [
+        //       Color.fromRGBO(224, 224, 224, 1).withOpacity(0.5),
+        //       Color.fromRGBO(
+        //               Theme.of(context).primaryColor.red,
+        //               Theme.of(context).primaryColor.green,
+        //               Theme.of(context).primaryColor.blue,
+        //               1)
+        //           .withOpacity(0.9),
+        //     ],
+        //     begin: Alignment.topLeft,
+        //     end: Alignment.bottomRight,
+        //     stops: [0, 1],
+        //   ),
+        // ),
         padding: EdgeInsets.all(16.0),
         child: Form(
           key: _registerForm,
-          child: Column(
-            children: [
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Expanded(
-                      child: CircleAvatar(
-                    backgroundImage:
-                        Image.asset('assets/img/standard_user_img.png').image,
-                    maxRadius: 75,
-                  )),
-                  Expanded(
-                    child: Column(
-                      children: [
-                        SizedBox(height: 20),
-                        UserInfoFormTextField('Nome', _nameController, null),
-                        SizedBox(height: 10),
-                        UserInfoFormTextField('CPF', _cpfController, null),
-                      ],
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Expanded(
+                        child: CircleAvatar(
+                      backgroundImage:
+                          Image.asset('assets/img/standard_user_img.png').image,
+                      maxRadius: 75,
+                    )),
+                    Expanded(
+                      child: Column(
+                        children: [
+                          SizedBox(height: 20),
+                          UserInfoFormTextField(
+                              'Nome Completo', _nameController, null),
+                          SizedBox(height: 10),
+                          UserInfoFormTextField('CPF', _cpfController, null),
+                        ],
+                      ),
                     ),
+                  ],
+                ),
+                SizedBox(height: 10),
+                UserInfoFormTextField('E-mail', _emailController, null),
+                SizedBox(height: 10),
+                UserInfoFormDateField(
+                    'Data de Nascimento', _bthdayController, null),
+                SizedBox(height: 10),
+                TextFormField(
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    labelText: 'Senha',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide: BorderSide(
+                        color: Theme.of(context).primaryColor,
+                        width: 2.0,
+                      ),
+                    ),
+                    filled: true,
+                    hintStyle: TextStyle(color: Theme.of(context).primaryColor),
                   ),
-                ],
-              ),
-              SizedBox(height: 10),
-              UserInfoFormTextField('E-mail', _emailController, null),
-              SizedBox(height: 10),
-              UserInfoFormDateField(
-                  'Data de Nascimento', _bthdayController, null),
-            ],
+                  textInputAction: TextInputAction.done,
+                  validator: (value) {
+                    if (value!.isEmpty) return 'Este campo é obrigatório.';
+                    if (_pwdController.text.length < 6)
+                      return 'Senha deve ter no mínimo 6 caracteres.';
+                    return null;
+                  },
+                  controller: _pwdController,
+                ),
+                SizedBox(height: 10),
+                TextFormField(
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    labelText: 'Confirmar Senha',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide: BorderSide(
+                        color: Theme.of(context).primaryColor,
+                        width: 2.0,
+                      ),
+                    ),
+                    filled: true,
+                    hintStyle: TextStyle(color: Theme.of(context).primaryColor),
+                  ),
+                  textInputAction: TextInputAction.done,
+                  validator: (value) {
+                    if (value!.isEmpty) return 'Este campo é obrigatório.';
+                    if (_pwdController.text != _confirmPwdController.text)
+                      return 'A senha e a confirmação não são iguais.';
+                    return null;
+                  },
+                  controller: _confirmPwdController,
+                ),
+                SizedBox(height: 10),
+                UserInfoFormList('Medicações', _medications),
+                UserInfoFormList('Vacinas', _conditions),
+                UserInfoFormList('Doenças', _vaccines),
+                Center(
+                  child: _isLoading
+                      ? CircularProgressIndicator()
+                      : ElevatedButton(
+                          onPressed: _submit, child: Text('Cadastrar')),
+                ),
+                SizedBox(height: 10),
+              ],
+            ),
           ),
         ),
       ),

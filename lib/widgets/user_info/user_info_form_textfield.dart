@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class UserInfoFormTextField extends StatelessWidget {
   final TextEditingController formController;
@@ -11,7 +12,11 @@ class UserInfoFormTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     if (initialValue != null) formController.text = initialValue!;
 
+    var maskFormatter = new MaskTextInputFormatter(
+        mask: '###.###.###-##', filter: {"#": RegExp(r'[0-9]')});
+
     return TextFormField(
+      inputFormatters: labelText == 'CPF' ? [maskFormatter] : [],
       decoration: InputDecoration(
         labelText: labelText,
         border: OutlineInputBorder(
