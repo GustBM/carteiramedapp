@@ -1,7 +1,8 @@
-import 'package:carteiramedapp/models/user_info.dart';
-import 'package:carteiramedapp/widgets/user_info_form_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'package:carteiramedapp/models/user_info.dart';
+import 'package:carteiramedapp/widgets/user_info/user_info_form_textfield.dart';
 
 class UserInfoScreen extends StatelessWidget {
   static const routeName = '/user-info';

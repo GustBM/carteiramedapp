@@ -1,6 +1,7 @@
-import 'package:carteiramedapp/widgets/user_info_form_datefield.dart';
-import 'package:carteiramedapp/widgets/user_info_form_textfield.dart';
 import 'package:flutter/material.dart';
+
+import 'package:carteiramedapp/widgets/user_info/user_info_form_datefield.dart';
+import 'package:carteiramedapp/widgets/user_info/user_info_form_textfield.dart';
 
 class NewUserScreen extends StatelessWidget {
   static const routeName = '/new-user';
@@ -35,18 +36,19 @@ class NewUserScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         SizedBox(height: 20),
-                        UserInfoFormTextField('Nome', _nameController, ''),
+                        UserInfoFormTextField('Nome', _nameController, null),
                         SizedBox(height: 10),
-                        UserInfoFormTextField('CPF', _cpfController, ''),
+                        UserInfoFormTextField('CPF', _cpfController, null),
                       ],
                     ),
                   ),
                 ],
               ),
               SizedBox(height: 10),
-              UserInfoFormTextField('E-mail', _emailController, ''),
+              UserInfoFormTextField('E-mail', _emailController, null),
+              SizedBox(height: 10),
               UserInfoFormDateField(
-                  'Data de Nascimento', _bthdayController, ''),
+                  'Data de Nascimento', _bthdayController, null),
             ],
           ),
         ),
