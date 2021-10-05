@@ -1,9 +1,8 @@
-import 'package:carteiramedapp/models/http_exception.dart';
-import 'package:carteiramedapp/providers/users_info.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../utils.dart';
+import 'package:carteiramedapp/models/http_exception.dart';
+import 'package:carteiramedapp/providers/users_info.dart';
 
 class SearchForm extends StatefulWidget {
   SearchForm({Key? key}) : super(key: key);
@@ -67,13 +66,6 @@ class _SearchFormState extends State<SearchForm> {
                     child:
                         Text('Buscar', style: TextStyle(color: Colors.white70)),
                     onPressed: _submit,
-                    style: TextButton.styleFrom(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 30.0, vertical: 4),
-                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      textStyle:
-                          TextStyle(color: Theme.of(context).accentColor),
-                    ),
                   ),
           ],
         ),

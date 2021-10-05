@@ -1,9 +1,10 @@
-import 'package:carteiramedapp/screens/user_info_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
 import 'package:carteiramedapp/screens/home_screen.dart';
+import 'package:carteiramedapp/screens/new_user_screen.dart';
+import 'package:carteiramedapp/screens/user_info_screen.dart';
 import 'package:carteiramedapp/providers/users_info.dart';
 
 void main() {
@@ -42,9 +43,20 @@ class CarteiraMedApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Carteira Médica App',
         theme: ThemeData(
-          primarySwatch: createMaterialColor(Colors.blue[200]!),
-          accentColor: createMaterialColor(Colors.blueGrey[300]!),
-        ),
+            primarySwatch: createMaterialColor(Colors.blue[200]!),
+            accentColor: createMaterialColor(Colors.blueGrey[300]!),
+            elevatedButtonTheme: ElevatedButtonThemeData(
+                style: TextButton.styleFrom(
+              padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 4),
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              textStyle: TextStyle(color: Theme.of(context).accentColor),
+            )),
+            textButtonTheme: TextButtonThemeData(
+                style: TextButton.styleFrom(
+                    textStyle: TextStyle(
+              color: Theme.of(context).accentColor,
+              decoration: TextDecoration.underline,
+            )))),
         supportedLocales: [const Locale('pt', 'BR')],
         localizationsDelegates: [
           GlobalMaterialLocalizations.delegate,
@@ -54,6 +66,7 @@ class CarteiraMedApp extends StatelessWidget {
         routes: {
           HomeScreen.routeName: (ctx) => HomeScreen(),
           UserInfoScreen.routeName: (ctx) => UserInfoScreen(),
+          NewUserScreen.routeName: (ctx) => NewUserScreen(),
         },
       ),
     );

@@ -1,5 +1,4 @@
-class UserInfo {
-  final String id;
+class UserInf {
   final String cpf;
   final String name;
   final String birthDate;
@@ -9,8 +8,7 @@ class UserInfo {
   final List<String> conditions;
   final List<String> vaccines;
 
-  UserInfo({
-    required this.id,
+  UserInf({
     required this.cpf,
     required this.name,
     required this.birthDate,
@@ -21,9 +19,8 @@ class UserInfo {
     this.vaccines = const [],
   });
 
-  UserInfo.fromJson(Map<String, Object?> json)
+  UserInf.fromJson(Map<String, Object?> json)
       : this(
-          id: json['id']! as String,
           cpf: json['cpf'] as String,
           name: json['name']! as String,
           birthDate: json['birthDate'] as String,
@@ -36,7 +33,6 @@ class UserInfo {
 
   Map<String, Object?> toJson() {
     return {
-      'id': id,
       'cpf': cpf,
       'name': name,
       'birthDate': birthDate,

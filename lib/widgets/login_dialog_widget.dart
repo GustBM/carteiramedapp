@@ -115,26 +115,15 @@ class _LoginDialogState extends State<LoginDialog> {
                           child: Text('Entrar',
                               style: TextStyle(color: Colors.white70)),
                           onPressed: _submit,
-                          style: TextButton.styleFrom(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 30.0, vertical: 4),
-                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                            textStyle:
-                                TextStyle(color: Theme.of(context).accentColor),
-                          ),
                         ),
                   SizedBox(
                     height: 10,
                   ),
                   TextButton(
-                    child: Text('Não é cadastrado? Regitre-se aqui!',
-                        style: TextStyle(
-                          color: Theme.of(context).accentColor,
-                          decoration: TextDecoration.underline,
-                        )),
+                    child: Text('Não é cadastrado? Regitre-se aqui!'),
                     onPressed: () {
-                      Navigator.of(context).pushNamed(NewUserScreen.routeName);
                       Navigator.of(context).pop();
+                      Navigator.of(context).pushNamed(NewUserScreen.routeName);
                     },
                   ),
                 ],

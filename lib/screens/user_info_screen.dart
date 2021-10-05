@@ -1,5 +1,5 @@
 import 'package:carteiramedapp/models/user_info.dart';
-import 'package:carteiramedapp/widgets/user_info_form_field.dart';
+import 'package:carteiramedapp/widgets/user_info_form_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -60,8 +60,7 @@ class _UserInfoFormState extends State<UserInfoForm> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _cpfController = TextEditingController();
 
-  var thisUser = UserInfo(
-      id: 'id',
+  var thisUser = UserInf(
       cpf: '13047889708',
       name: 'Teste Testerson',
       birthDate: '20/10/1993',
