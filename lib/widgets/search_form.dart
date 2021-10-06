@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:provider/provider.dart';
 
 import 'package:carteiramedapp/models/http_exception.dart';
@@ -15,6 +16,9 @@ class _SearchFormState extends State<SearchForm> {
   final GlobalKey<FormState> _formKey = GlobalKey();
   var _isLoading = false;
   final _inputController = TextEditingController();
+  var maskFormatter = new MaskTextInputFormatter(
+      mask: '###.###.###-##', filter: {"#": RegExp(r'[0-9]')});
+
   void _submit() {
     if (!_formKey.currentState!.validate()) {
       return;
@@ -47,14 +51,13 @@ class _SearchFormState extends State<SearchForm> {
         child: Column(
           children: [
             TextFormField(
+              inputFormatters: [maskFormatter],
               decoration: InputDecoration(
-                  labelText: 'Busque por CPF ou E-mail',
-                  alignLabelWithHint: false),
+                  labelText: 'Busque por CPF', alignLabelWithHint: false),
               textInputAction: TextInputAction.done,
               textAlign: TextAlign.center,
               validator: (value) {
-                if (value!.isEmpty)
-                  return 'Preencha o campo com o CPF ou e-mail.';
+                if (value!.isEmpty) return 'Preencha o campo com o CPF.';
                 return null;
               },
               controller: _inputController,

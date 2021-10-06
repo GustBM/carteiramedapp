@@ -9,12 +9,21 @@ class Auth with ChangeNotifier {
   final _auth = FirebaseAuth.instance;
   CollectionReference _userInf = FirebaseFirestore.instance.collection('user');
 
-  Future<void> newUser(UserInf newUser, String pwd) async {
+  Future<void> newUser(
+      String cpf,
+      String name,
+      String bthdate,
+      String email,
+      String? imgUrl,
+      List<String> med,
+      List<String> cond,
+      List<String> vac,
+      String pwd) async {
     UserCredential? user;
 
     try {
       user = await _auth.createUserWithEmailAndPassword(
-          email: newUser.email, password: pwd);
+          email: email, password: pwd);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         throw HttpException(
@@ -26,10 +35,22 @@ class Auth with ChangeNotifier {
       throw HttpException("Houve um Erro!" + e.toString());
     }
 
-    addAndUpdateAppUser(user!.user!.uid, newUser).then((value) {
+    UserInf newUser = new UserInf(
+        cpf: cpf,
+        userId: user!.user!.uid,
+        name: name,
+        birthDate: bthdate,
+        email: email,
+        imageUrl: imgUrl,
+        medications: med,
+        conditions: cond,
+        vaccines: vac);
+
+    addAndUpdateAppUser(cpf, newUser).then((value) {
       login(newUser.email, pwd);
     }).catchError(
         (e) => throw HttpException("Houve um Erro!" + e.code.toString()));
+    notifyListeners();
   }
 
   Future<void> login(String email, String password) async {
@@ -59,9 +80,9 @@ class Auth with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> addAndUpdateAppUser(String userId, UserInf appUser) async {
+  Future<void> addAndUpdateAppUser(String userCpf, UserInf appUser) async {
     _userInf
-        .doc(userId)
+        .doc(userCpf)
         .withConverter<UserInf>(
             fromFirestore: (snapshot, _) => UserInf.fromJson(snapshot.data()!),
             toFirestore: (schedule, _) => schedule.toJson())

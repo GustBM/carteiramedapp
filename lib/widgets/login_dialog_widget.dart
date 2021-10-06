@@ -1,8 +1,13 @@
 import 'dart:ui';
 
 import 'package:carteiramedapp/models/http_exception.dart';
+import 'package:carteiramedapp/models/user_info.dart';
+import 'package:carteiramedapp/providers/auth.dart';
+import 'package:carteiramedapp/providers/users_info.dart';
 import 'package:carteiramedapp/screens/new_user_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:provider/provider.dart';
 
 class LoginDialog extends StatefulWidget {
   const LoginDialog({Key? key}) : super(key: key);
@@ -20,7 +25,10 @@ class _LoginDialogState extends State<LoginDialog> {
     final _cpfController = TextEditingController();
     final _pwdController = TextEditingController();
 
-    void _submit() {
+    var maskFormatter = new MaskTextInputFormatter(
+        mask: '###.###.###-##', filter: {"#": RegExp(r'[0-9]')});
+
+    Future<void> _submit() async {
       if (!_formKey.currentState!.validate()) {
         return;
       }
@@ -33,9 +41,10 @@ class _LoginDialogState extends State<LoginDialog> {
       final String pwd = _pwdController.value.text;
 
       try {
-        // Provider.of<UsersInfo>(context, listen: false).getUserByCPF(input);
+        String userEmail = await Provider.of<UsersInfo>(context, listen: false)
+            .getEmailByCPF(cpf);
+        Provider.of<Auth>(context, listen: false).login(userEmail, pwd);
       } on HttpException catch (e) {
-        // showWarningDialog(context, e.toString());
         print(e.toString());
       } catch (e) {
         print(e.toString());
@@ -61,6 +70,7 @@ class _LoginDialogState extends State<LoginDialog> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
+                      inputFormatters: [maskFormatter],
                       decoration: InputDecoration(
                         labelText: 'CPF',
                         prefixIcon: Icon(Icons.account_circle_outlined),
@@ -106,6 +116,15 @@ class _LoginDialogState extends State<LoginDialog> {
                             TextStyle(color: Theme.of(context).primaryColor),
                       ),
                       obscureText: true,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Senha Obrigatória.';
+                        }
+                        if (value.length < 6) {
+                          return 'Senha deve ser maior que 6 caracteres.';
+                        }
+                        return null;
+                      },
                     ),
                   ),
                   SizedBox(height: 10),

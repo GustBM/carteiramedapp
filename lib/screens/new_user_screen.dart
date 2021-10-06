@@ -1,12 +1,11 @@
-import 'package:carteiramedapp/models/http_exception.dart';
-import 'package:carteiramedapp/models/user_info.dart';
-import 'package:carteiramedapp/providers/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import 'package:carteiramedapp/models/http_exception.dart';
+import 'package:carteiramedapp/providers/auth.dart';
 import 'package:carteiramedapp/widgets/user_info/user_info_form_datefield.dart';
 import 'package:carteiramedapp/widgets/user_info/user_info_form_list.dart';
 import 'package:carteiramedapp/widgets/user_info/user_info_form_textfield.dart';
-import 'package:provider/provider.dart';
 
 class NewUserScreen extends StatefulWidget {
   static const routeName = '/new-user';
@@ -43,14 +42,14 @@ class _NewUserScreenState extends State<NewUserScreen> {
       });
       try {
         await Provider.of<Auth>(context, listen: false).newUser(
-            new UserInf(
-                cpf: _cpfController.text,
-                name: _nameController.text,
-                birthDate: _bthdayController.text,
-                email: _emailController.text,
-                medications: _medications,
-                vaccines: _vaccines,
-                conditions: _conditions),
+            _cpfController.text,
+            _nameController.text,
+            _bthdayController.text,
+            _emailController.text,
+            '',
+            _medications,
+            _conditions,
+            _vaccines,
             _pwdController.text);
       } on HttpException catch (e) {
         print('HttpException' + e.toString());

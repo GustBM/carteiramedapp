@@ -1,13 +1,13 @@
 import 'package:carteiramedapp/models/http_exception.dart';
 import 'package:carteiramedapp/models/user_info.dart';
 import 'package:carteiramedapp/utils.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class UsersInfo extends ChangeNotifier {
-  /*CollectionReference _schedules =
-      FirebaseFirestore.instance.collection('user');
-  
-  Future<DocumentSnapshot<Schedule>> getUserInfo(String userCpf) async {
+  CollectionReference _users = FirebaseFirestore.instance.collection('user');
+
+  /*Future<DocumentSnapshot<Schedule>> getUserInfo(String userCpf) async {
     return _schedules
         .doc(userId)
         .withConverter<UserInfo>(
@@ -30,5 +30,17 @@ class UsersInfo extends ChangeNotifier {
       return 1;
     else
       throw HttpException('Usuário não encontrado');
+  }
+
+  Future<String> getEmailByCPF(String cpf) async {
+    return _users
+        .doc(cpf)
+        .withConverter<UserInf>(
+            fromFirestore: (snapshot, _) => UserInf.fromJson(snapshot.data()!),
+            toFirestore: (schedule, _) => schedule.toJson())
+        .get()
+        .then((userSnapshot) {
+      return userSnapshot.data()!.email;
+    });
   }
 }

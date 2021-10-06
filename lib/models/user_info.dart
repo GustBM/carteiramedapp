@@ -1,5 +1,6 @@
 class UserInf {
   final String cpf;
+  final String userId;
   final String name;
   final String birthDate;
   final String email;
@@ -10,6 +11,7 @@ class UserInf {
 
   UserInf({
     required this.cpf,
+    required this.userId,
     required this.name,
     required this.birthDate,
     required this.email,
@@ -22,6 +24,7 @@ class UserInf {
   UserInf.fromJson(Map<String, Object?> json)
       : this(
           cpf: json['cpf'] as String,
+          userId: json['userId'] as String,
           name: json['name']! as String,
           birthDate: json['birthDate'] as String,
           email: json['email'] as String,
@@ -34,6 +37,7 @@ class UserInf {
   Map<String, Object?> toJson() {
     return {
       'cpf': cpf,
+      'userId': userId,
       'name': name,
       'birthDate': birthDate,
       'email': email,
