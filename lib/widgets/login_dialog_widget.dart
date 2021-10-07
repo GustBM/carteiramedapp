@@ -45,7 +45,8 @@ class _LoginDialogState extends State<LoginDialog> {
       try {
         String? userEmail = await Provider.of<UsersInfo>(context, listen: false)
             .getEmailByCPF(cpf);
-        Provider.of<Auth>(context, listen: false).login(userEmail!, pwd);
+        Provider.of<Auth>(context, listen: false)
+            .login(context, userEmail!, pwd);
       } on HttpException catch (e) {
         showWarningDialog(context, e.toString());
       } catch (e) {

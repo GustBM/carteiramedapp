@@ -1,3 +1,4 @@
+import 'package:carteiramedapp/screens/user_info_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,11 +10,13 @@ class Auth with ChangeNotifier {
   final _auth = FirebaseAuth.instance;
   CollectionReference _userInf = FirebaseFirestore.instance.collection('user');
 
-  String get currentUserId {
+  String? get currentUserId {
+    if (FirebaseAuth.instance.currentUser == null) return null;
     return FirebaseAuth.instance.currentUser!.uid;
   }
 
   Future<void> newUser(
+      BuildContext context,
       String cpf,
       String name,
       String bthdate,
@@ -51,22 +54,24 @@ class Auth with ChangeNotifier {
         vaccines: vac);
 
     addAndUpdateAppUser(cpf, newUser).then((value) {
-      login(newUser.email, pwd);
+      login(context, newUser.email, pwd);
     }).catchError(
         (e) => throw HttpException("Houve um Erro!" + e.code.toString()));
     notifyListeners();
   }
 
-  Future<void> login(String email, String password) async {
+  Future<void> login(
+      BuildContext context, String email, String password) async {
+    UserCredential? user;
     try {
-      await _auth.signInWithEmailAndPassword(
+      user = await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
     } on FirebaseAuthException catch (error) {
       switch (error.code) {
         case "invalid-email":
-          throw HttpException("E-mail inválido.");
+          throw HttpException("CPF inválido.");
 
         case "wrong-password":
           throw HttpException("Senha Incorreta");
@@ -80,7 +85,11 @@ class Auth with ChangeNotifier {
         default:
           throw HttpException("Houve um erro!\n" + error.toString());
       }
+    } catch (e) {
+      throw HttpException("Houve um erro!\n" + e.toString());
     }
+    Navigator.of(context)
+        .pushNamed(UserInfoScreen.routeName, arguments: user.user!.uid);
     notifyListeners();
   }
 
@@ -91,6 +100,26 @@ class Auth with ChangeNotifier {
             fromFirestore: (snapshot, _) => UserInf.fromJson(snapshot.data()!),
             toFirestore: (schedule, _) => schedule.toJson())
         .set(appUser);
+  }
+
+  Future<void> updateUser(
+      String userCpf,
+      final String name,
+      String birthDate,
+      String email,
+      String? imageUrl,
+      List<String> medications,
+      List<String> conditions,
+      List<String> vaccines) async {
+    _userInf.doc(userCpf).update({
+      'name': name,
+      'birthDate': birthDate,
+      'email': email,
+      'imageUrl': imageUrl,
+      'medications': medications,
+      'conditions': conditions,
+      'vaccines': vaccines
+    }).catchError((e) => throw HttpException("Erro ao atualizar os Dados."));
   }
 
   Future<void> logout() async {

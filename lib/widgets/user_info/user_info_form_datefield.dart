@@ -5,8 +5,9 @@ class UserInfoFormDateField extends StatelessWidget {
   final TextEditingController formController;
   final String labelText;
   final String? initialValue;
-
-  UserInfoFormDateField(this.labelText, this.formController, this.initialValue);
+  final bool canEdit;
+  UserInfoFormDateField(
+      this.labelText, this.formController, this.initialValue, this.canEdit);
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +39,7 @@ class UserInfoFormDateField extends StatelessWidget {
         return null;
       },
       controller: formController,
-      readOnly: initialValue != null,
+      readOnly: canEdit,
     );
   }
 }

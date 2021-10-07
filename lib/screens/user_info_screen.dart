@@ -1,3 +1,4 @@
+import 'package:async/async.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -68,6 +69,28 @@ class _UserInfoFormState extends State<UserInfoForm> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _cpfController = TextEditingController();
   final TextEditingController _bthdayController = TextEditingController();
+  late final Future<QuerySnapshot<UserInf>> myFuture;
+  final AsyncMemoizer<QuerySnapshot<UserInf>> _memoizer = AsyncMemoizer();
+
+  Future<QuerySnapshot<UserInf>> _fetchData() async {
+    return _memoizer.runOnce(() async {
+      return await Provider.of<UsersInfo>(context, listen: false)
+          .getUserById(widget.thisUser);
+    });
+  }
+
+  void initState() {
+    myFuture = _fetchData();
+    super.initState();
+  }
+
+  bool edit = true;
+
+  void _canEdit() {
+    setState(() {
+      edit = !edit;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,8 +100,7 @@ class _UserInfoFormState extends State<UserInfoForm> {
     return Container(
       padding: EdgeInsets.all(16.0),
       child: FutureBuilder<QuerySnapshot<UserInf>>(
-        future: Provider.of<UsersInfo>(context, listen: false)
-            .getUserById(widget.thisUser),
+        future: myFuture,
         builder: (BuildContext context,
             AsyncSnapshot<QuerySnapshot<UserInf>> snapshot) {
           UserInf userInfo;
@@ -106,11 +128,11 @@ class _UserInfoFormState extends State<UserInfoForm> {
                               child: Column(
                                 children: [
                                   SizedBox(height: 20),
-                                  UserInfoFormTextField(
-                                      'Nome', _nameController, userInfo.name),
+                                  UserInfoFormTextField('Nome', _nameController,
+                                      userInfo.name, edit),
                                   SizedBox(height: 10),
-                                  UserInfoFormTextField(
-                                      'CPF', _cpfController, userInfo.cpf),
+                                  UserInfoFormTextField('CPF', _cpfController,
+                                      userInfo.cpf, false),
                                   SizedBox(height: 10),
                                 ],
                               ),
@@ -119,26 +141,63 @@ class _UserInfoFormState extends State<UserInfoForm> {
                         ),
                         SizedBox(height: 10),
                         UserInfoFormTextField(
-                            'E-mail', _emailController, userInfo.email),
+                            'E-mail', _emailController, userInfo.email, edit),
                         SizedBox(height: 10),
                         UserInfoFormDateField('Data de Nascimento',
-                            _bthdayController, userInfo.birthDate),
+                            _bthdayController, userInfo.birthDate, edit),
                         SizedBox(height: 10),
                         UserInfoFormList(
-                            'Medicações', userInfo.medications, true),
-                        UserInfoFormList('Vacinas', userInfo.vaccines, true),
-                        UserInfoFormList('Doenças', userInfo.conditions, true),
+                            'Medicações', userInfo.medications, edit),
+                        UserInfoFormList('Vacinas', userInfo.vaccines, edit),
+                        UserInfoFormList('Doenças', userInfo.conditions, edit),
                         SizedBox(height: 20),
                         isUser
-                            ? ElevatedButton(
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.all(Colors.red),
-                                ),
-                                onPressed:
-                                    Provider.of<Auth>(context, listen: false)
-                                        .logout,
-                                child: Text('Sair da Conta'))
+                            ? Column(
+                                children: edit
+                                    ? [
+                                        SizedBox(height: 30),
+                                        ElevatedButton(
+                                            onPressed: _canEdit,
+                                            child: Text('Editar')),
+                                        SizedBox(height: 30),
+                                        ElevatedButton(
+                                            style: ButtonStyle(
+                                              backgroundColor:
+                                                  MaterialStateProperty.all(
+                                                      Colors.red),
+                                            ),
+                                            onPressed: Provider.of<Auth>(
+                                                    context,
+                                                    listen: false)
+                                                .logout,
+                                            child: Text('Sair da Conta'))
+                                      ]
+                                    : [
+                                        ElevatedButton(
+                                            onPressed: () {
+                                              print('asdfvasdfv');
+                                              Provider.of<Auth>(context,
+                                                      listen: false)
+                                                  .updateUser(
+                                                      _cpfController.text,
+                                                      _nameController.text,
+                                                      _bthdayController.text,
+                                                      _emailController.text,
+                                                      '',
+                                                      userInfo.medications,
+                                                      userInfo.conditions,
+                                                      userInfo.vaccines)
+                                                  .then((value) {
+                                                Navigator.pop(context);
+                                              });
+                                            },
+                                            child: Text('Salvar')),
+                                        SizedBox(height: 10),
+                                        ElevatedButton(
+                                            onPressed: _canEdit,
+                                            child: Text('Voltar')),
+                                      ],
+                              )
                             : SizedBox(),
                       ],
                     ),

@@ -44,6 +44,7 @@ class _NewUserScreenState extends State<NewUserScreen> {
       });
       try {
         await Provider.of<Auth>(context, listen: false).newUser(
+            context,
             _cpfController.text,
             _nameController.text,
             _bthdayController.text,
@@ -102,19 +103,20 @@ class _NewUserScreenState extends State<NewUserScreen> {
                         children: [
                           SizedBox(height: 20),
                           UserInfoFormTextField(
-                              'Nome Completo', _nameController, null),
+                              'Nome Completo', _nameController, null, false),
                           SizedBox(height: 10),
-                          UserInfoFormTextField('CPF', _cpfController, null),
+                          UserInfoFormTextField(
+                              'CPF', _cpfController, null, false),
                         ],
                       ),
                     ),
                   ],
                 ),
                 SizedBox(height: 10),
-                UserInfoFormTextField('E-mail', _emailController, null),
+                UserInfoFormTextField('E-mail', _emailController, null, false),
                 SizedBox(height: 10),
                 UserInfoFormDateField(
-                    'Data de Nascimento', _bthdayController, null),
+                    'Data de Nascimento', _bthdayController, null, false),
                 SizedBox(height: 10),
                 TextFormField(
                   obscureText: true,

@@ -5,8 +5,10 @@ class UserInfoFormTextField extends StatelessWidget {
   final TextEditingController formController;
   final String labelText;
   final String? initialValue;
+  final bool canEdit;
 
-  UserInfoFormTextField(this.labelText, this.formController, this.initialValue);
+  UserInfoFormTextField(
+      this.labelText, this.formController, this.initialValue, this.canEdit);
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +40,7 @@ class UserInfoFormTextField extends StatelessWidget {
         return null;
       },
       controller: formController,
-      readOnly: initialValue != null,
+      readOnly: canEdit,
     );
   }
 }
