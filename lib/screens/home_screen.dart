@@ -1,5 +1,6 @@
 import 'package:carteiramedapp/screens/user_info_screen.dart';
 import 'package:carteiramedapp/widgets/login_dialog_widget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:carteiramedapp/widgets/search_form.dart';
@@ -11,6 +12,7 @@ class HomeScreen extends StatelessWidget {
     final deviceWidth = MediaQuery.of(context).size.width;
     final primaryColor = Theme.of(context).primaryColor;
     // final accentColor = Theme.of(context).accentColor;
+    final _user = FirebaseAuth.instance.currentUser;
 
     return Scaffold(
       appBar: AppBar(
@@ -19,10 +21,13 @@ class HomeScreen extends StatelessWidget {
           icon: const Icon(Icons.person),
           onPressed: () {
             // Navigator.of(context).pushNamed(UserInfoScreen.routeName);
-            showDialog<Widget>(
-              context: context,
-              builder: (_) => new LoginDialog(),
-            );
+            _user != null
+                ? Navigator.of(context)
+                    .pushNamed(UserInfoScreen.routeName, arguments: _user.uid)
+                : showDialog<Widget>(
+                    context: context,
+                    builder: (_) => new LoginDialog(),
+                  );
           },
         ),
       ),

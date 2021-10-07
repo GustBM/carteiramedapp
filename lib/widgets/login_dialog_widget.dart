@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:provider/provider.dart';
 
+import '../utils.dart';
+
 class LoginDialog extends StatefulWidget {
   const LoginDialog({Key? key}) : super(key: key);
 
@@ -41,13 +43,13 @@ class _LoginDialogState extends State<LoginDialog> {
       final String pwd = _pwdController.value.text;
 
       try {
-        String userEmail = await Provider.of<UsersInfo>(context, listen: false)
+        String? userEmail = await Provider.of<UsersInfo>(context, listen: false)
             .getEmailByCPF(cpf);
-        Provider.of<Auth>(context, listen: false).login(userEmail, pwd);
+        Provider.of<Auth>(context, listen: false).login(userEmail!, pwd);
       } on HttpException catch (e) {
-        print(e.toString());
+        showWarningDialog(context, e.toString());
       } catch (e) {
-        print(e.toString());
+        showWarningDialog(context, e.toString());
       }
       setState(() {
         _isLoading = false;
@@ -71,6 +73,7 @@ class _LoginDialogState extends State<LoginDialog> {
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
                       inputFormatters: [maskFormatter],
+                      controller: _cpfController,
                       decoration: InputDecoration(
                         labelText: 'CPF',
                         prefixIcon: Icon(Icons.account_circle_outlined),
@@ -98,6 +101,7 @@ class _LoginDialogState extends State<LoginDialog> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
+                      controller: _pwdController,
                       decoration: InputDecoration(
                         labelText: 'Senha',
                         prefixIcon: Icon(Icons.lock_outline),

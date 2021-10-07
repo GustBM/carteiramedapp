@@ -1,9 +1,12 @@
+import 'package:carteiramedapp/screens/user_info_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:provider/provider.dart';
 
 import 'package:carteiramedapp/models/http_exception.dart';
 import 'package:carteiramedapp/providers/users_info.dart';
+
+import '../utils.dart';
 
 class SearchForm extends StatefulWidget {
   SearchForm({Key? key}) : super(key: key);
@@ -19,7 +22,7 @@ class _SearchFormState extends State<SearchForm> {
   var maskFormatter = new MaskTextInputFormatter(
       mask: '###.###.###-##', filter: {"#": RegExp(r'[0-9]')});
 
-  void _submit() {
+  void _submit() async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
@@ -30,12 +33,15 @@ class _SearchFormState extends State<SearchForm> {
 
     final String input = _inputController.value.text;
     try {
-      Provider.of<UsersInfo>(context, listen: false).getUserByCPF(input);
+      String? userId = await Provider.of<UsersInfo>(context, listen: false)
+          .findUserByCpf(input);
+
+      Navigator.of(context)
+          .pushNamed(UserInfoScreen.routeName, arguments: userId);
     } on HttpException catch (e) {
-      // showWarningDialog(context, e.toString());
-      print(e.toString());
+      showWarningDialog(context, e.toString());
     } catch (e) {
-      print(e.toString());
+      showWarningDialog(context, e.toString());
     }
     setState(() {
       _isLoading = false;

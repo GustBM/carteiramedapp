@@ -7,6 +7,8 @@ import 'package:carteiramedapp/widgets/user_info/user_info_form_datefield.dart';
 import 'package:carteiramedapp/widgets/user_info/user_info_form_list.dart';
 import 'package:carteiramedapp/widgets/user_info/user_info_form_textfield.dart';
 
+import '../utils.dart';
+
 class NewUserScreen extends StatefulWidget {
   static const routeName = '/new-user';
   const NewUserScreen({Key? key}) : super(key: key);
@@ -52,9 +54,9 @@ class _NewUserScreenState extends State<NewUserScreen> {
             _vaccines,
             _pwdController.text);
       } on HttpException catch (e) {
-        print('HttpException' + e.toString());
+        showWarningDialog(context, e.toString());
       } catch (e) {
-        print('Error' + e.toString());
+        showWarningDialog(context, e.toString());
       }
       setState(() {
         _isLoading = false;
@@ -64,22 +66,22 @@ class _NewUserScreenState extends State<NewUserScreen> {
     return Scaffold(
       appBar: AppBar(),
       body: Container(
-        // decoration: BoxDecoration(
-        //   gradient: LinearGradient(
-        //     colors: [
-        //       Color.fromRGBO(224, 224, 224, 1).withOpacity(0.5),
-        //       Color.fromRGBO(
-        //               Theme.of(context).primaryColor.red,
-        //               Theme.of(context).primaryColor.green,
-        //               Theme.of(context).primaryColor.blue,
-        //               1)
-        //           .withOpacity(0.9),
-        //     ],
-        //     begin: Alignment.topLeft,
-        //     end: Alignment.bottomRight,
-        //     stops: [0, 1],
-        //   ),
-        // ),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Color.fromRGBO(224, 224, 224, 1).withOpacity(0.5),
+              Color.fromRGBO(
+                      Theme.of(context).primaryColor.red,
+                      Theme.of(context).primaryColor.green,
+                      Theme.of(context).primaryColor.blue,
+                      1)
+                  .withOpacity(0.9),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            stops: [0, 1],
+          ),
+        ),
         padding: EdgeInsets.all(16.0),
         child: Form(
           key: _registerForm,
@@ -168,9 +170,9 @@ class _NewUserScreenState extends State<NewUserScreen> {
                   controller: _confirmPwdController,
                 ),
                 SizedBox(height: 10),
-                UserInfoFormList('Medicações', _medications),
-                UserInfoFormList('Vacinas', _conditions),
-                UserInfoFormList('Doenças', _vaccines),
+                UserInfoFormList('Medicações', _medications, false),
+                UserInfoFormList('Vacinas', _conditions, false),
+                UserInfoFormList('Doenças', _vaccines, false),
                 Center(
                   child: _isLoading
                       ? CircularProgressIndicator()

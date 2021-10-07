@@ -9,6 +9,10 @@ class Auth with ChangeNotifier {
   final _auth = FirebaseAuth.instance;
   CollectionReference _userInf = FirebaseFirestore.instance.collection('user');
 
+  String get currentUserId {
+    return FirebaseAuth.instance.currentUser!.uid;
+  }
+
   Future<void> newUser(
       String cpf,
       String name,

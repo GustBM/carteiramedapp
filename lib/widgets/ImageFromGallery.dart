@@ -1,7 +1,10 @@
+import 'dart:io';
+
+import 'package:carteiramedapp/widgets/user_img.dart';
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 ImagePicker picker = ImagePicker();
-
 
 class ImageFromGallery extends StatefulWidget {
   final type;
@@ -15,7 +18,7 @@ class ImageFromGalleryState extends State<ImageFromGallery> {
   var _image;
   var imagePicker;
   var type;
-  
+
   ImageFromGalleryState(this.type);
 
   @override
@@ -23,6 +26,7 @@ class ImageFromGalleryState extends State<ImageFromGallery> {
     super.initState();
     imagePicker = new ImagePicker();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +46,9 @@ class ImageFromGalleryState extends State<ImageFromGallery> {
                     ? ImageSource.camera
                     : ImageSource.gallery;
                 XFile image = await imagePicker.pickImage(
-                    source: source, imageQuality: 50, preferredCameraDevice: CameraDevice.front);
+                    source: source,
+                    imageQuality: 50,
+                    preferredCameraDevice: CameraDevice.front);
                 setState(() {
                   _image = File(image.path);
                 });
@@ -50,18 +56,16 @@ class ImageFromGalleryState extends State<ImageFromGallery> {
               child: Container(
                 width: 200,
                 height: 200,
-                decoration: BoxDecoration(
-                    color: Colors.red[200]),
+                decoration: BoxDecoration(color: Colors.red[200]),
                 child: _image != null
                     ? Image.file(
-                          _image,
-                          width: 200.0,
-                          height: 200.0,
-                          fit: BoxFit.fitHeight,
-                        )
+                        _image,
+                        width: 200.0,
+                        height: 200.0,
+                        fit: BoxFit.fitHeight,
+                      )
                     : Container(
-                        decoration: BoxDecoration(
-                            color: Colors.red[200]),
+                        decoration: BoxDecoration(color: Colors.red[200]),
                         width: 200,
                         height: 200,
                         child: Icon(
@@ -76,3 +80,4 @@ class ImageFromGalleryState extends State<ImageFromGallery> {
       ),
     );
   }
+}

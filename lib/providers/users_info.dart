@@ -1,46 +1,50 @@
-import 'package:carteiramedapp/models/http_exception.dart';
-import 'package:carteiramedapp/models/user_info.dart';
-import 'package:carteiramedapp/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+
+import 'package:carteiramedapp/models/http_exception.dart';
+import 'package:carteiramedapp/models/user_info.dart';
 
 class UsersInfo extends ChangeNotifier {
   CollectionReference _users = FirebaseFirestore.instance.collection('user');
 
-  /*Future<DocumentSnapshot<Schedule>> getUserInfo(String userCpf) async {
-    return _schedules
-        .doc(userId)
-        .withConverter<UserInfo>(
-            fromFirestore: (snapshot, _) => UserInfo.fromJson(snapshot.data()!),
+  Future<QuerySnapshot<UserInf>> getUserById(String uid) async {
+    return await _users
+        .where('userId', isEqualTo: uid)
+        .withConverter<UserInf>(
+            fromFirestore: (snapshot, _) => UserInf.fromJson(snapshot.data()!),
             toFirestore: (schedule, _) => schedule.toJson())
         .get();
-  }*/
-
-  Future<int> getUserByCPF(String input) async {
-    var newInput;
-    if (isValidCPF(input)) {
-      newInput = int.parse(input);
-      print('É cpf');
-    } else if (isValidEmail(input)) {
-      newInput = input;
-    } else {
-      throw HttpException('Formato inválido. Apenas CPF ou e-mail');
-    }
-    if (int.parse(input) == 13047889708)
-      return 1;
-    else
-      throw HttpException('Usuário não encontrado');
   }
 
-  Future<String> getEmailByCPF(String cpf) async {
-    return _users
+  Future<String> findUserByCpf(String cpf) async {
+    return await _users
         .doc(cpf)
         .withConverter<UserInf>(
             fromFirestore: (snapshot, _) => UserInf.fromJson(snapshot.data()!),
             toFirestore: (schedule, _) => schedule.toJson())
         .get()
         .then((userSnapshot) {
-      return userSnapshot.data()!.email;
+      if (userSnapshot.exists) {
+        return userSnapshot.data()!.userId;
+      } else {
+        throw HttpException("CPF não encontrado");
+      }
     });
+  }
+
+  Future<String?> getEmailByCPF(String cpf) async {
+    return await _users
+        .doc(cpf)
+        .withConverter<UserInf>(
+            fromFirestore: (snapshot, _) => UserInf.fromJson(snapshot.data()!),
+            toFirestore: (schedule, _) => schedule.toJson())
+        .get()
+        .then((userSnapshot) {
+      if (userSnapshot.exists)
+        return userSnapshot.data()!.email;
+      else
+        throw HttpException("CPF não encontrado");
+    }).catchError(
+            (e) => throw HttpException("Houve um Erro!" + e.code.toString()));
   }
 }
