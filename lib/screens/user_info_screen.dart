@@ -175,7 +175,6 @@ class _UserInfoFormState extends State<UserInfoForm> {
                                     : [
                                         ElevatedButton(
                                             onPressed: () {
-                                              print('asdfvasdfv');
                                               Provider.of<Auth>(context,
                                                       listen: false)
                                                   .updateUser(
