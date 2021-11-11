@@ -1,4 +1,8 @@
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import 'package:carteiramedapp/models/http_exception.dart';
@@ -33,6 +37,85 @@ class _NewUserScreenState extends State<NewUserScreen> {
 
     var _isLoading = false;
 
+    XFile? _imgFile;
+    final ImagePicker _imgPicker = ImagePicker();
+
+    void _takePicture(ImageSource source) async {
+      final pickedFile = await _imgPicker.pickImage(source: source);
+      setState(() {
+        _imgFile = pickedFile;
+      });
+    }
+
+    Widget _photoOptionBottomSheet() {
+      return Container(
+        height: 100.0,
+        width: MediaQuery.of(context).size.width,
+        margin: EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 20,
+        ),
+        child: Column(
+          children: [
+            Text("Escolha a Foto", style: TextStyle(fontSize: 20)),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    _takePicture(ImageSource.camera);
+                  },
+                  child: Row(children: [
+                    Icon(Icons.camera),
+                    Text('Camera'),
+                  ]),
+                ),
+                SizedBox(width: 30),
+                TextButton(
+                  onPressed: () {
+                    _takePicture(ImageSource.gallery);
+                  },
+                  child: Row(children: [
+                    Icon(Icons.photo_album),
+                    Text('Galeria'),
+                  ]),
+                ),
+              ],
+            )
+          ],
+        ),
+      );
+    }
+
+    Widget _imageProfile() {
+      return Stack(
+        children: [
+          CircleAvatar(
+              radius: 80.0,
+              backgroundImage: _imgFile == null
+                  ? Image.asset('assets/img/standard_user_img.png').image
+                  : FileImage(File(_imgFile!.path))),
+          Positioned(
+            child: InkWell(
+              onTap: () {
+                showModalBottomSheet(
+                    context: context,
+                    builder: ((builder) => _photoOptionBottomSheet()));
+              },
+              child: Icon(
+                Icons.camera_alt,
+                color: Colors.teal,
+                size: 28.0,
+              ),
+            ),
+            bottom: 20.0,
+            right: 20.0,
+          ),
+        ],
+      );
+    }
+
     Future<void> _submit() async {
       if (!_registerForm.currentState!.validate()) {
         // Invalid!
@@ -42,14 +125,23 @@ class _NewUserScreenState extends State<NewUserScreen> {
       setState(() {
         _isLoading = true;
       });
+      String imageUrl = '';
       try {
+        if (_imgFile != null) {
+          FirebaseStorage storage = FirebaseStorage.instance;
+          Reference ref =
+              storage.ref().child("profile_image").child(_cpfController.text);
+          await ref.putFile(File(_imgFile!.path)).then((storageTask) async {
+            imageUrl = await storageTask.ref.getDownloadURL();
+          });
+        }
         await Provider.of<Auth>(context, listen: false).newUser(
             context,
             _cpfController.text,
             _nameController.text,
             _bthdayController.text,
             _emailController.text,
-            '',
+            imageUrl,
             _medications,
             _conditions,
             _vaccines,
@@ -87,17 +179,15 @@ class _NewUserScreenState extends State<NewUserScreen> {
         child: Form(
           key: _registerForm,
           child: SingleChildScrollView(
+            physics: ScrollPhysics(),
             child: Column(
               children: [
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Expanded(
-                        child: CircleAvatar(
-                      backgroundImage:
-                          Image.asset('assets/img/standard_user_img.png').image,
-                      maxRadius: 75,
-                    )),
+                      child: _imageProfile(),
+                    ),
                     Expanded(
                       child: Column(
                         children: [

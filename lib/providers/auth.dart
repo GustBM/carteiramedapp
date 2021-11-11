@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:carteiramedapp/screens/user_info_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -107,15 +110,26 @@ class Auth with ChangeNotifier {
       final String name,
       String birthDate,
       String email,
-      String? imageUrl,
+      File? imageUrl,
       List<String> medications,
       List<String> conditions,
       List<String> vaccines) async {
+    String imgUrl = '';
+    if (imageUrl != null) {
+      FirebaseStorage storage = FirebaseStorage.instance;
+      Reference ref = storage
+          .ref()
+          .child("profile_image")
+          .child('profile_image_' + userCpf);
+      await ref.putFile(imageUrl).then((storageTask) async {
+        imgUrl = await storageTask.ref.getDownloadURL();
+      });
+    }
     _userInf.doc(userCpf).update({
       'name': name,
       'birthDate': birthDate,
       'email': email,
-      'imageUrl': imageUrl,
+      'imageUrl': imgUrl,
       'medications': medications,
       'conditions': conditions,
       'vaccines': vaccines

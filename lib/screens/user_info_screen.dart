@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:async/async.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import 'package:carteiramedapp/models/user_info.dart';
@@ -72,6 +75,85 @@ class _UserInfoFormState extends State<UserInfoForm> {
   late final Future<QuerySnapshot<UserInf>> myFuture;
   final AsyncMemoizer<QuerySnapshot<UserInf>> _memoizer = AsyncMemoizer();
 
+  XFile? _imgFile;
+  final ImagePicker _imgPicker = ImagePicker();
+
+  void _takePicture(ImageSource source) async {
+    final pickedFile = await _imgPicker.pickImage(source: source);
+    setState(() {
+      _imgFile = pickedFile;
+    });
+  }
+
+  Widget _photoOptionBottomSheet() {
+    return Container(
+      height: 100.0,
+      width: MediaQuery.of(context).size.width,
+      margin: EdgeInsets.symmetric(
+        horizontal: 20,
+        vertical: 20,
+      ),
+      child: Column(
+        children: [
+          Text("Escolha a Foto", style: TextStyle(fontSize: 20)),
+          SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextButton(
+                onPressed: () {
+                  _takePicture(ImageSource.camera);
+                },
+                child: Row(children: [
+                  Icon(Icons.camera),
+                  Text('Camera'),
+                ]),
+              ),
+              SizedBox(width: 30),
+              TextButton(
+                onPressed: () {
+                  _takePicture(ImageSource.gallery);
+                },
+                child: Row(children: [
+                  Icon(Icons.photo_album),
+                  Text('Galeria'),
+                ]),
+              ),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _imageProfile() {
+    return Stack(
+      children: [
+        CircleAvatar(
+            radius: 80.0,
+            backgroundImage: _imgFile == null
+                ? Image.asset('assets/img/standard_user_img.png').image
+                : FileImage(File(_imgFile!.path))),
+        Positioned(
+          child: InkWell(
+            onTap: () {
+              showModalBottomSheet(
+                  context: context,
+                  builder: ((builder) => _photoOptionBottomSheet()));
+            },
+            child: Icon(
+              Icons.camera_alt,
+              color: Colors.teal,
+              size: 28.0,
+            ),
+          ),
+          bottom: 20.0,
+          right: 20.0,
+        ),
+      ],
+    );
+  }
+
   Future<QuerySnapshot<UserInf>> _fetchData() async {
     return _memoizer.runOnce(() async {
       return await Provider.of<UsersInfo>(context, listen: false)
@@ -118,12 +200,18 @@ class _UserInfoFormState extends State<UserInfoForm> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Expanded(
-                                child: CircleAvatar(
-                              backgroundImage: Image.asset(
-                                      'assets/img/standard_user_img.png')
-                                  .image,
-                              maxRadius: 75,
-                            )),
+                              child: edit
+                                  ? CircleAvatar(
+                                      backgroundImage: userInfo.imageUrl != null
+                                          ? Image.network(userInfo.imageUrl!)
+                                              .image
+                                          : Image.asset(
+                                                  'assets/img/standard_user_img.png')
+                                              .image,
+                                      maxRadius: 75,
+                                    )
+                                  : _imageProfile(),
+                            ),
                             Expanded(
                               child: Column(
                                 children: [
@@ -182,7 +270,7 @@ class _UserInfoFormState extends State<UserInfoForm> {
                                                       _nameController.text,
                                                       _bthdayController.text,
                                                       _emailController.text,
-                                                      '',
+                                                      File(_imgFile!.path),
                                                       userInfo.medications,
                                                       userInfo.conditions,
                                                       userInfo.vaccines)
