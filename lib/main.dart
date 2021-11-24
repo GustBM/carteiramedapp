@@ -75,7 +75,7 @@ class _CarteiraMedAppState extends State<CarteiraMedApp> {
               color: Theme.of(context).accentColor,
               decoration: TextDecoration.underline,
             )))),
-        supportedLocales: [const Locale('pt', 'BR')],
+        supportedLocales: [const Locale('pt', 'BR'),const Locale('en', ''),],
         localizationsDelegates: [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate
