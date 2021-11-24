@@ -1,10 +1,12 @@
 import 'dart:io';
 
 import 'package:async/async.dart';
+import 'package:carteiramedapp/providers/notifications.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:provider/provider.dart';
 
 import 'package:carteiramedapp/models/user_info.dart';
@@ -179,6 +181,7 @@ class _UserInfoFormState extends State<UserInfoForm> {
     final bool isUser =
         Provider.of<Auth>(context, listen: false).currentUserId ==
             widget.thisUser;
+
     return Container(
       padding: EdgeInsets.all(16.0),
       child: FutureBuilder<QuerySnapshot<UserInf>>(
@@ -189,6 +192,10 @@ class _UserInfoFormState extends State<UserInfoForm> {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.data!.size > 0) {
               userInfo = snapshot.data!.docs[0].data();
+              if (!isUser && userInfo.playerId != null) {
+                Provider.of<Notifications>(context)
+                    .notifyUserOfAcess(userInfo.playerId!);
+              }
               return Container(
                 padding: EdgeInsets.all(16.0),
                 child: Form(

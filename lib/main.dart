@@ -1,3 +1,4 @@
+import 'package:carteiramedapp/providers/notifications.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -33,35 +34,6 @@ class CarteiraMedApp extends StatefulWidget {
 class _CarteiraMedAppState extends State<CarteiraMedApp> {
   final Future<FirebaseApp> _fbApp = Firebase.initializeApp();
 
-  //  @override
-  // void initState() {
-  //   // TODO: implement initState
-  //   super.initState();
-
-  //   FirebaseMessaging.instance.getInitialMessage().then((message) {
-  //     if(message != null){
-  //       final routeFromMessage = message.data["route"];
-
-  //       Navigator.of(context).pushNamed(routeFromMessage);
-  //     }
-  //   });
-
-  //   FirebaseMessaging.onMessage.listen((message) {
-  //     if(message.notification != null){
-  //       print(message.notification!.body);
-  //       print(message.notification!.title);
-  //     }
-  //   });
-
-  //   ///When the app is in background but opened and user taps
-  //   ///on the notification
-  //   FirebaseMessaging.onMessageOpenedApp.listen((message) {
-  //     final routeFromMessage = message.data["route"];
-
-  //     Navigator.of(context).pushNamed(routeFromMessage);
-  //   });
-  // }
-
   @override
   void initState() {
     super.initState();
@@ -81,6 +53,9 @@ class _CarteiraMedAppState extends State<CarteiraMedApp> {
         ),
         ChangeNotifierProvider.value(
           value: UsersInfo(),
+        ),
+        ChangeNotifierProvider.value(
+          value: Notifications(),
         ),
       ],
       child: MaterialApp(

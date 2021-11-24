@@ -8,6 +8,7 @@ class UserInf {
   final List<String> medications;
   final List<String> conditions;
   final List<String> vaccines;
+  final String? playerId;
 
   UserInf({
     required this.cpf,
@@ -19,6 +20,7 @@ class UserInf {
     this.medications = const [],
     this.conditions = const [],
     this.vaccines = const [],
+    required this.playerId,
   });
 
   UserInf.fromJson(Map<String, Object?> json)
@@ -32,6 +34,7 @@ class UserInf {
           medications: (json['medications']! as List<dynamic>).cast<String>(),
           conditions: (json['conditions']! as List<dynamic>).cast<String>(),
           vaccines: (json['vaccines']! as List<dynamic>).cast<String>(),
+          playerId: json['playerId'] as String?,
         );
 
   Map<String, Object?> toJson() {
@@ -45,6 +48,7 @@ class UserInf {
       'medications': medications,
       'conditions': conditions,
       'vaccines': vaccines,
+      'playerId': playerId,
     };
   }
 }

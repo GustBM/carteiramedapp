@@ -8,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:carteiramedapp/models/http_exception.dart';
 import 'package:carteiramedapp/models/user_info.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 class Auth with ChangeNotifier {
   final _auth = FirebaseAuth.instance;
@@ -45,16 +46,23 @@ class Auth with ChangeNotifier {
       throw HttpException("Houve um Erro!" + e.toString());
     }
 
+    await OneSignal.shared.setExternalUserId(user!.user!.uid);
+
+    final status = await OneSignal.shared.getDeviceState();
+    final String? osUserID = status?.userId;
+
     UserInf newUser = new UserInf(
-        cpf: cpf,
-        userId: user!.user!.uid,
-        name: name,
-        birthDate: bthdate,
-        email: email,
-        imageUrl: imgUrl,
-        medications: med,
-        conditions: cond,
-        vaccines: vac);
+      cpf: cpf,
+      userId: user.user!.uid,
+      name: name,
+      birthDate: bthdate,
+      email: email,
+      imageUrl: imgUrl,
+      medications: med,
+      conditions: cond,
+      vaccines: vac,
+      playerId: osUserID!,
+    );
 
     addAndUpdateAppUser(cpf, newUser).then((value) {
       login(context, newUser.email, pwd);
@@ -91,6 +99,8 @@ class Auth with ChangeNotifier {
     } catch (e) {
       throw HttpException("Houve um erro!\n" + e.toString());
     }
+    OneSignal.shared.setEmail(email: email);
+    OneSignal.shared.setExternalUserId(user.user!.uid);
     Navigator.of(context)
         .pushNamed(UserInfoScreen.routeName, arguments: user.user!.uid);
     notifyListeners();
