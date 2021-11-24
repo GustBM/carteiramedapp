@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:provider/provider.dart';
 
 import 'package:carteiramedapp/screens/home_screen.dart';
@@ -11,14 +13,64 @@ import 'package:carteiramedapp/providers/auth.dart';
 import 'package:carteiramedapp/providers/users_info.dart';
 import 'package:carteiramedapp/utils.dart';
 
+Future<void> backgroundHandler(RemoteMessage message) async {
+  print(message.data.toString());
+  print(message.notification!.title);
+}
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(backgroundHandler);
   runApp(CarteiraMedApp());
 }
 
-class CarteiraMedApp extends StatelessWidget {
+class CarteiraMedApp extends StatefulWidget {
+  @override
+  State<CarteiraMedApp> createState() => _CarteiraMedAppState();
+}
+
+class _CarteiraMedAppState extends State<CarteiraMedApp> {
   final Future<FirebaseApp> _fbApp = Firebase.initializeApp();
+
+  //  @override
+  // void initState() {
+  //   // TODO: implement initState
+  //   super.initState();
+
+  //   FirebaseMessaging.instance.getInitialMessage().then((message) {
+  //     if(message != null){
+  //       final routeFromMessage = message.data["route"];
+
+  //       Navigator.of(context).pushNamed(routeFromMessage);
+  //     }
+  //   });
+
+  //   FirebaseMessaging.onMessage.listen((message) {
+  //     if(message.notification != null){
+  //       print(message.notification!.body);
+  //       print(message.notification!.title);
+  //     }
+  //   });
+
+  //   ///When the app is in background but opened and user taps
+  //   ///on the notification
+  //   FirebaseMessaging.onMessageOpenedApp.listen((message) {
+  //     final routeFromMessage = message.data["route"];
+
+  //     Navigator.of(context).pushNamed(routeFromMessage);
+  //   });
+  // }
+
+  @override
+  void initState() {
+    super.initState();
+    configOneSignel();
+  }
+
+  void configOneSignel() {
+    OneSignal.shared.setAppId('10356065-b84a-4b09-be44-d6cba9137bda');
+  }
 
   @override
   Widget build(BuildContext context) {
