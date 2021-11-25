@@ -68,7 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      'Bem-vindo a Carteira Médica',
+                      AppLocalizations.of(context).welcomeText;,
                       style: Theme.of(context).textTheme.headline4,
                       textAlign: TextAlign.center,
                     ),
