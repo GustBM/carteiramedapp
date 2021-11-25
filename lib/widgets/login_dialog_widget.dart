@@ -22,7 +22,7 @@ class LoginDialog extends StatefulWidget {
 class _LoginDialogState extends State<LoginDialog> {
   @override
   Widget build(BuildContext context) {
-	var t = AppLocalizations.of(context);
+    var t = AppLocalizations.of(context);
     final GlobalKey<FormState> _formKey = GlobalKey();
     var _isLoading = false;
 
@@ -63,7 +63,7 @@ class _LoginDialogState extends State<LoginDialog> {
       padding: EdgeInsets.all(8.0),
       child: SimpleDialog(
         title: Text(
-          t.entreNaConta,
+          t!.entreNaConta,
           textAlign: TextAlign.center,
         ),
         children: [

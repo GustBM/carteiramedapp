@@ -26,7 +26,7 @@ class UserInfoScreen extends StatelessWidget {
     final deviceWidth = MediaQuery.of(context).size.width;
     final primaryColor = Theme.of(context).primaryColor;
     String userId = ModalRoute.of(context)!.settings.arguments as String;
-	var t = AppLocalizations.of(context);
+    var t = AppLocalizations.of(context);
 
     return Scaffold(
       appBar: AppBar(),
@@ -90,6 +90,7 @@ class _UserInfoFormState extends State<UserInfoForm> {
   }
 
   Widget _photoOptionBottomSheet() {
+    var t = AppLocalizations.of(context);
     return Container(
       height: 100.0,
       width: MediaQuery.of(context).size.width,
@@ -99,7 +100,7 @@ class _UserInfoFormState extends State<UserInfoForm> {
       ),
       child: Column(
         children: [
-          Text(t.escolhaFoto, style: TextStyle(fontSize: 20)),
+          Text(t!.escolhaFoto, style: TextStyle(fontSize: 20)),
           SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -110,7 +111,7 @@ class _UserInfoFormState extends State<UserInfoForm> {
                 },
                 child: Row(children: [
                   Icon(Icons.camera),
-                  t.camera,
+                  Text(t.camera),
                 ]),
               ),
               SizedBox(width: 30),
@@ -120,7 +121,7 @@ class _UserInfoFormState extends State<UserInfoForm> {
                 },
                 child: Row(children: [
                   Icon(Icons.photo_album),
-                  t.galeria,
+                  Text(t.galeria),
                 ]),
               ),
             ],
@@ -183,7 +184,7 @@ class _UserInfoFormState extends State<UserInfoForm> {
     final bool isUser =
         Provider.of<Auth>(context, listen: false).currentUserId ==
             widget.thisUser;
-
+    var t = AppLocalizations.of(context);
     return Container(
       padding: EdgeInsets.all(16.0),
       child: FutureBuilder<QuerySnapshot<UserInf>>(
@@ -225,8 +226,8 @@ class _UserInfoFormState extends State<UserInfoForm> {
                               child: Column(
                                 children: [
                                   SizedBox(height: 20),
-                                  UserInfoFormTextField(t.nome, _nameController,
-                                      userInfo.name, edit),
+                                  UserInfoFormTextField(t!.nome,
+                                      _nameController, userInfo.name, edit),
                                   SizedBox(height: 10),
                                   UserInfoFormTextField('CPF', _cpfController,
                                       userInfo.cpf, false),
@@ -255,7 +256,7 @@ class _UserInfoFormState extends State<UserInfoForm> {
                                         SizedBox(height: 30),
                                         ElevatedButton(
                                             onPressed: _canEdit,
-                                            child: t.editar),
+                                            child: Text(t.editar)),
                                         SizedBox(height: 30),
                                         ElevatedButton(
                                             style: ButtonStyle(
@@ -267,7 +268,7 @@ class _UserInfoFormState extends State<UserInfoForm> {
                                                     context,
                                                     listen: false)
                                                 .logout,
-                                            child: sairConta)
+                                            child: Text(t.sairConta))
                                       ]
                                     : [
                                         ElevatedButton(
@@ -287,11 +288,11 @@ class _UserInfoFormState extends State<UserInfoForm> {
                                                 Navigator.pop(context);
                                               });
                                             },
-                                            child: t.save),
+                                            child: Text(t.salvar)),
                                         SizedBox(height: 10),
                                         ElevatedButton(
                                             onPressed: _canEdit,
-                                            child: t.return),
+                                            child: Text(t.voltar)),
                                       ],
                               )
                             : SizedBox(),
@@ -302,11 +303,11 @@ class _UserInfoFormState extends State<UserInfoForm> {
               );
             } else if (snapshot.data!.size == 0) {
               return Center(
-                child: Text(t.nenhumUsuarioCPF + widget.thisUser),
+                child: Text(t!.nenhumUsuarioCPF + widget.thisUser),
               );
             } else if (snapshot.hasError) {
               return Center(
-                child: t.erroBuscaUsuario,
+                child: Text(t!.erroBuscaUsuario),
               );
             }
           }

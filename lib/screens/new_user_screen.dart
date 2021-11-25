@@ -12,7 +12,6 @@ import 'package:carteiramedapp/widgets/user_info/user_info_form_list.dart';
 import 'package:carteiramedapp/widgets/user_info/user_info_form_textfield.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-
 import '../utils.dart';
 
 class NewUserScreen extends StatefulWidget {
@@ -38,7 +37,7 @@ class _NewUserScreenState extends State<NewUserScreen> {
     List<String> _vaccines = [];
 
     var _isLoading = false;
-	var t = AppLocalizations.of(context);
+    var t = AppLocalizations.of(context);
 
     XFile? _imgFile;
     final ImagePicker _imgPicker = ImagePicker();
@@ -60,7 +59,7 @@ class _NewUserScreenState extends State<NewUserScreen> {
         ),
         child: Column(
           children: [
-            Text(t.escolhaFoto, style: TextStyle(fontSize: 20)),
+            Text(t!.escolhaFoto, style: TextStyle(fontSize: 20)),
             SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -196,7 +195,7 @@ class _NewUserScreenState extends State<NewUserScreen> {
                         children: [
                           SizedBox(height: 20),
                           UserInfoFormTextField(
-                              t.nomeCompleto, _nameController, null, false),
+                              t!.nomeCompleto, _nameController, null, false),
                           SizedBox(height: 10),
                           UserInfoFormTextField(
                               'CPF', _cpfController, null, false),
@@ -231,8 +230,7 @@ class _NewUserScreenState extends State<NewUserScreen> {
                   textInputAction: TextInputAction.done,
                   validator: (value) {
                     if (value!.isEmpty) return t.esteCampoObrigatorio;
-                    if (_pwdController.text.length < 6)
-                      return t.senhaMaisQue6;
+                    if (_pwdController.text.length < 6) return t.senhaMaisQue6;
                     return null;
                   },
                   controller: _pwdController,
@@ -266,13 +264,13 @@ class _NewUserScreenState extends State<NewUserScreen> {
                 ),
                 SizedBox(height: 10),
                 UserInfoFormList(t.medicacoes, _medications, false),
-                UserInfoFormList(t.vacinas', _conditions, false),
+                UserInfoFormList(t.vacinas, _conditions, false),
                 UserInfoFormList(t.doencas, _vaccines, false),
                 Center(
                   child: _isLoading
                       ? CircularProgressIndicator()
                       : ElevatedButton(
-                          onPressed: _submit, child: t.cadastrar),
+                          onPressed: _submit, child: Text(t.cadastrar)),
                 ),
                 SizedBox(height: 10),
               ],

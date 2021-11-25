@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-
 class UserInfoFormList extends StatefulWidget {
   final String labelText;
   final List<String> list;
@@ -21,7 +20,7 @@ class _UserInfoFormListState extends State<UserInfoFormList> {
 
   @override
   Widget build(BuildContext context) {
-	var t = AppLocalizations.of(context);
+    var t = AppLocalizations.of(context);
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -87,9 +86,11 @@ class _UserInfoFormListState extends State<UserInfoFormList> {
           widget.list.isEmpty
               ? Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: Text(t.digiteAs +
+                  child: Text(t!.digiteAs +
                       widget.labelText +
-                      t.queEstiverUsando+" \"+\t.paraAdiconarLista),
+                      t.queEstiverUsando +
+                      " \n " +
+                      t.paraAdiconarLista),
                 )
               : ChipList(widget.list, !widget.readOnly, callback),
         ],

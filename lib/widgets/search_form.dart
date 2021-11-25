@@ -50,7 +50,7 @@ class _SearchFormState extends State<SearchForm> {
 
   @override
   Widget build(BuildContext context) {
-	var t = AppLocalizations.of(context);
+    var t = AppLocalizations.of(context);
     return Container(
       padding: EdgeInsets.all(16.0),
       child: Form(
@@ -60,7 +60,7 @@ class _SearchFormState extends State<SearchForm> {
             TextFormField(
               inputFormatters: [maskFormatter],
               decoration: InputDecoration(
-                  labelText: t.busquePorCPF, alignLabelWithHint: false),
+                  labelText: t!.busquePorCPF, alignLabelWithHint: false),
               textInputAction: TextInputAction.done,
               textAlign: TextAlign.center,
               validator: (value) {
