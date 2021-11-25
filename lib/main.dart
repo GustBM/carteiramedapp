@@ -4,6 +4,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
 import 'package:carteiramedapp/screens/home_screen.dart';
@@ -59,7 +60,9 @@ class _CarteiraMedAppState extends State<CarteiraMedApp> {
         ),
       ],
       child: MaterialApp(
-        title: 'Carteira Médica App',
+         onGenerateTitle: (context) { 
+        return AppLocalizations.of(context).appTitle;
+		},
         theme: ThemeData(
             primarySwatch: createMaterialColor(Colors.blue[200]!),
             accentColor: createMaterialColor(Colors.blueGrey[300]!),
@@ -77,6 +80,7 @@ class _CarteiraMedAppState extends State<CarteiraMedApp> {
             )))),
         supportedLocales: [const Locale('pt', 'BR'),const Locale('en', ''),],
         localizationsDelegates: [
+		  AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate
         ],
