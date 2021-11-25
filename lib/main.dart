@@ -60,9 +60,9 @@ class _CarteiraMedAppState extends State<CarteiraMedApp> {
         ),
       ],
       child: MaterialApp(
-         onGenerateTitle: (context) { 
-        return AppLocalizations.of(context).appTitle;
-		},
+        onGenerateTitle: (context) {
+          return AppLocalizations.of(context)!.appTitle;
+        },
         theme: ThemeData(
             primarySwatch: createMaterialColor(Colors.blue[200]!),
             accentColor: createMaterialColor(Colors.blueGrey[300]!),
@@ -78,9 +78,12 @@ class _CarteiraMedAppState extends State<CarteiraMedApp> {
               color: Theme.of(context).accentColor,
               decoration: TextDecoration.underline,
             )))),
-        supportedLocales: [const Locale('pt', 'BR'),const Locale('en', ''),],
+        supportedLocales: [
+          const Locale('pt', 'BR'),
+          const Locale('en', ''),
+        ],
         localizationsDelegates: [
-		  AppLocalizations.delegate,
+          AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate
         ],

@@ -9,4 +9,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get appTitle => 'Medical File';
+
+  @override
+  String get welcomeText => 'Welcome to the Medical File';
 }

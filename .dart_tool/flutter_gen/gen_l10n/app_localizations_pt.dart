@@ -9,4 +9,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get appTitle => 'Carteira Médica';
+
+  @override
+  String get welcomeText => 'Bem-vindo a carteira Médica';
 }
