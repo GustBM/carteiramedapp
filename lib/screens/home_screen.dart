@@ -28,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final deviceWidth = MediaQuery.of(context).size.width;
     final primaryColor = Theme.of(context).primaryColor;
     final _user = FirebaseAuth.instance.currentUser;
-	var t = AppLocalizations.of(context);
+    var t = AppLocalizations.of(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -70,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      text: t.welcomeText,
+                      t!.welcomeText,
                       style: Theme.of(context).textTheme.headline4,
                       textAlign: TextAlign.center,
                     ),

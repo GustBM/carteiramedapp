@@ -99,6 +99,12 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Carteira Médica'**
   String get appTitle;
+
+  /// No description provided for @welcomeText.
+  ///
+  /// In pt, this message translates to:
+  /// **'Bem-vindo a carteira Médica'**
+  String get welcomeText;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
