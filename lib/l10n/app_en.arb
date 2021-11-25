@@ -13,7 +13,7 @@
 	"naoCadastrado": "Not Registered? Sign-up here!",
 	"esteCampoObrigatorio": "Required Field",
 	"digiteAs": "Type the ",
-	"queEstiverUsando": " that you are using and press the \",
+	"queEstiverUsando": " that you are using and press the ",
 	"paraAdiconarLista": " to add it to the list.",
 	"escolhaFoto": "Choose a Photo",
 	"nomeCompleto": "Full Name",
@@ -33,5 +33,5 @@
 	"salvar": "Salve",
 	"voltar": "Return",
 	"nenhumUsuarioCPF": "No user with this CPF ",
-	"erroBuscaUsuario": "An Error occurred while looking for the user",
+	"erroBuscaUsuario": "An Error occurred while looking for the user"
 }

@@ -105,6 +105,204 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Bem-vindo a carteira Médica'**
   String get welcomeText;
+
+  /// No description provided for @busquePorCPF.
+  ///
+  /// In pt, this message translates to:
+  /// **'Search By CPF'**
+  String get busquePorCPF;
+
+  /// No description provided for @buscar.
+  ///
+  /// In pt, this message translates to:
+  /// **'Buscar'**
+  String get buscar;
+
+  /// No description provided for @preenchaCampoCPF.
+  ///
+  /// In pt, this message translates to:
+  /// **'Preencha o campo com o CPF.'**
+  String get preenchaCampoCPF;
+
+  /// No description provided for @entreNaConta.
+  ///
+  /// In pt, this message translates to:
+  /// **'Entre na sua conta'**
+  String get entreNaConta;
+
+  /// No description provided for @invalidoCPF.
+  ///
+  /// In pt, this message translates to:
+  /// **'CPF inválido!'**
+  String get invalidoCPF;
+
+  /// No description provided for @senha.
+  ///
+  /// In pt, this message translates to:
+  /// **'Senha'**
+  String get senha;
+
+  /// No description provided for @senhaObrigatoria.
+  ///
+  /// In pt, this message translates to:
+  /// **'Senha Obrigatória.'**
+  String get senhaObrigatoria;
+
+  /// No description provided for @senhaMaisQue6.
+  ///
+  /// In pt, this message translates to:
+  /// **'Senha deve ser maior que 6 caracteres.'**
+  String get senhaMaisQue6;
+
+  /// No description provided for @entrar.
+  ///
+  /// In pt, this message translates to:
+  /// **'Entrar'**
+  String get entrar;
+
+  /// No description provided for @naoCadastrado.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não é cadastrado? Regitre-se aqui!'**
+  String get naoCadastrado;
+
+  /// No description provided for @esteCampoObrigatorio.
+  ///
+  /// In pt, this message translates to:
+  /// **'Este campo é obrigatório.'**
+  String get esteCampoObrigatorio;
+
+  /// No description provided for @digiteAs.
+  ///
+  /// In pt, this message translates to:
+  /// **'Digite as '**
+  String get digiteAs;
+
+  /// No description provided for @queEstiverUsando.
+  ///
+  /// In pt, this message translates to:
+  /// **' que você estiver tomando e clique no '**
+  String get queEstiverUsando;
+
+  /// No description provided for @paraAdiconarLista.
+  ///
+  /// In pt, this message translates to:
+  /// **' para adiciona-lo a lista.'**
+  String get paraAdiconarLista;
+
+  /// No description provided for @escolhaFoto.
+  ///
+  /// In pt, this message translates to:
+  /// **'Escolha a Foto'**
+  String get escolhaFoto;
+
+  /// No description provided for @nomeCompleto.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nome Completo'**
+  String get nomeCompleto;
+
+  /// No description provided for @nome.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nome'**
+  String get nome;
+
+  /// No description provided for @email.
+  ///
+  /// In pt, this message translates to:
+  /// **'E-mail'**
+  String get email;
+
+  /// No description provided for @dataNascimento.
+  ///
+  /// In pt, this message translates to:
+  /// **'Data de Nascimento'**
+  String get dataNascimento;
+
+  /// No description provided for @confirmarSenha.
+  ///
+  /// In pt, this message translates to:
+  /// **'Confirmar Senha'**
+  String get confirmarSenha;
+
+  /// No description provided for @senhaEConfirmaNaoIgual.
+  ///
+  /// In pt, this message translates to:
+  /// **'A senha e a confirmação não são iguais.'**
+  String get senhaEConfirmaNaoIgual;
+
+  /// No description provided for @medicacoes.
+  ///
+  /// In pt, this message translates to:
+  /// **'Medicações'**
+  String get medicacoes;
+
+  /// No description provided for @vacinas.
+  ///
+  /// In pt, this message translates to:
+  /// **'Vacinas'**
+  String get vacinas;
+
+  /// No description provided for @doencas.
+  ///
+  /// In pt, this message translates to:
+  /// **'Doenças'**
+  String get doencas;
+
+  /// No description provided for @cadastrar.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cadastrar'**
+  String get cadastrar;
+
+  /// No description provided for @camera.
+  ///
+  /// In pt, this message translates to:
+  /// **'Câmera'**
+  String get camera;
+
+  /// No description provided for @galeria.
+  ///
+  /// In pt, this message translates to:
+  /// **'Galeria'**
+  String get galeria;
+
+  /// No description provided for @editar.
+  ///
+  /// In pt, this message translates to:
+  /// **'Editar'**
+  String get editar;
+
+  /// No description provided for @sairConta.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sair da Conta'**
+  String get sairConta;
+
+  /// No description provided for @salvar.
+  ///
+  /// In pt, this message translates to:
+  /// **'Salvar'**
+  String get salvar;
+
+  /// No description provided for @voltar.
+  ///
+  /// In pt, this message translates to:
+  /// **'Voltar'**
+  String get voltar;
+
+  /// No description provided for @nenhumUsuarioCPF.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhum usuário com o CPF '**
+  String get nenhumUsuarioCPF;
+
+  /// No description provided for @erroBuscaUsuario.
+  ///
+  /// In pt, this message translates to:
+  /// **'Erro ao buscar o usuário'**
+  String get erroBuscaUsuario;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
