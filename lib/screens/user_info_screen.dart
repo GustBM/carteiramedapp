@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:carteiramedapp/models/user_info.dart';
 import 'package:carteiramedapp/providers/auth.dart';
@@ -25,6 +26,7 @@ class UserInfoScreen extends StatelessWidget {
     final deviceWidth = MediaQuery.of(context).size.width;
     final primaryColor = Theme.of(context).primaryColor;
     String userId = ModalRoute.of(context)!.settings.arguments as String;
+	var t = AppLocalizations.of(context);
 
     return Scaffold(
       appBar: AppBar(),
@@ -97,7 +99,7 @@ class _UserInfoFormState extends State<UserInfoForm> {
       ),
       child: Column(
         children: [
-          Text("Escolha a Foto", style: TextStyle(fontSize: 20)),
+          Text(t.escolhaFoto, style: TextStyle(fontSize: 20)),
           SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -108,7 +110,7 @@ class _UserInfoFormState extends State<UserInfoForm> {
                 },
                 child: Row(children: [
                   Icon(Icons.camera),
-                  Text('Camera'),
+                  t.camera,
                 ]),
               ),
               SizedBox(width: 30),
@@ -118,7 +120,7 @@ class _UserInfoFormState extends State<UserInfoForm> {
                 },
                 child: Row(children: [
                   Icon(Icons.photo_album),
-                  Text('Galeria'),
+                  t.galeria,
                 ]),
               ),
             ],
@@ -223,7 +225,7 @@ class _UserInfoFormState extends State<UserInfoForm> {
                               child: Column(
                                 children: [
                                   SizedBox(height: 20),
-                                  UserInfoFormTextField('Nome', _nameController,
+                                  UserInfoFormTextField(t.nome, _nameController,
                                       userInfo.name, edit),
                                   SizedBox(height: 10),
                                   UserInfoFormTextField('CPF', _cpfController,
@@ -236,15 +238,15 @@ class _UserInfoFormState extends State<UserInfoForm> {
                         ),
                         SizedBox(height: 10),
                         UserInfoFormTextField(
-                            'E-mail', _emailController, userInfo.email, edit),
+                            t.email, _emailController, userInfo.email, edit),
                         SizedBox(height: 10),
-                        UserInfoFormDateField('Data de Nascimento',
+                        UserInfoFormDateField(t.dataNascimento,
                             _bthdayController, userInfo.birthDate, edit),
                         SizedBox(height: 10),
                         UserInfoFormList(
-                            'Medicações', userInfo.medications, edit),
-                        UserInfoFormList('Vacinas', userInfo.vaccines, edit),
-                        UserInfoFormList('Doenças', userInfo.conditions, edit),
+                            t.medicacoes, userInfo.medications, edit),
+                        UserInfoFormList(t.vacinas, userInfo.vaccines, edit),
+                        UserInfoFormList(t.doencas, userInfo.conditions, edit),
                         SizedBox(height: 20),
                         isUser
                             ? Column(
@@ -253,7 +255,7 @@ class _UserInfoFormState extends State<UserInfoForm> {
                                         SizedBox(height: 30),
                                         ElevatedButton(
                                             onPressed: _canEdit,
-                                            child: Text('Editar')),
+                                            child: t.editar),
                                         SizedBox(height: 30),
                                         ElevatedButton(
                                             style: ButtonStyle(
@@ -265,7 +267,7 @@ class _UserInfoFormState extends State<UserInfoForm> {
                                                     context,
                                                     listen: false)
                                                 .logout,
-                                            child: Text('Sair da Conta'))
+                                            child: sairConta)
                                       ]
                                     : [
                                         ElevatedButton(
@@ -285,11 +287,11 @@ class _UserInfoFormState extends State<UserInfoForm> {
                                                 Navigator.pop(context);
                                               });
                                             },
-                                            child: Text('Salvar')),
+                                            child: t.save),
                                         SizedBox(height: 10),
                                         ElevatedButton(
                                             onPressed: _canEdit,
-                                            child: Text('Voltar')),
+                                            child: t.return),
                                       ],
                               )
                             : SizedBox(),
@@ -300,11 +302,11 @@ class _UserInfoFormState extends State<UserInfoForm> {
               );
             } else if (snapshot.data!.size == 0) {
               return Center(
-                child: Text('Nenhum usuário com o CPF ' + widget.thisUser),
+                child: Text(t.nenhumUsuarioCPF + widget.thisUser),
               );
             } else if (snapshot.hasError) {
               return Center(
-                child: Text('Erro ao buscar o usuário'),
+                child: t.erroBuscaUsuario,
               );
             }
           }

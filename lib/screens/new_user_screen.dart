@@ -10,6 +10,8 @@ import 'package:carteiramedapp/providers/auth.dart';
 import 'package:carteiramedapp/widgets/user_info/user_info_form_datefield.dart';
 import 'package:carteiramedapp/widgets/user_info/user_info_form_list.dart';
 import 'package:carteiramedapp/widgets/user_info/user_info_form_textfield.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 import '../utils.dart';
 
@@ -36,6 +38,7 @@ class _NewUserScreenState extends State<NewUserScreen> {
     List<String> _vaccines = [];
 
     var _isLoading = false;
+	var t = AppLocalizations.of(context);
 
     XFile? _imgFile;
     final ImagePicker _imgPicker = ImagePicker();
@@ -57,7 +60,7 @@ class _NewUserScreenState extends State<NewUserScreen> {
         ),
         child: Column(
           children: [
-            Text("Escolha a Foto", style: TextStyle(fontSize: 20)),
+            Text(t.escolhaFoto, style: TextStyle(fontSize: 20)),
             SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -193,7 +196,7 @@ class _NewUserScreenState extends State<NewUserScreen> {
                         children: [
                           SizedBox(height: 20),
                           UserInfoFormTextField(
-                              'Nome Completo', _nameController, null, false),
+                              t.nomeCompleto, _nameController, null, false),
                           SizedBox(height: 10),
                           UserInfoFormTextField(
                               'CPF', _cpfController, null, false),
@@ -203,15 +206,15 @@ class _NewUserScreenState extends State<NewUserScreen> {
                   ],
                 ),
                 SizedBox(height: 10),
-                UserInfoFormTextField('E-mail', _emailController, null, false),
+                UserInfoFormTextField(t.email, _emailController, null, false),
                 SizedBox(height: 10),
                 UserInfoFormDateField(
-                    'Data de Nascimento', _bthdayController, null, false),
+                    t.dataNascimento, _bthdayController, null, false),
                 SizedBox(height: 10),
                 TextFormField(
                   obscureText: true,
                   decoration: InputDecoration(
-                    labelText: 'Senha',
+                    labelText: t.senha,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
@@ -227,9 +230,9 @@ class _NewUserScreenState extends State<NewUserScreen> {
                   ),
                   textInputAction: TextInputAction.done,
                   validator: (value) {
-                    if (value!.isEmpty) return 'Este campo é obrigatório.';
+                    if (value!.isEmpty) return t.esteCampoObrigatorio;
                     if (_pwdController.text.length < 6)
-                      return 'Senha deve ter no mínimo 6 caracteres.';
+                      return t.senhaMaisQue6;
                     return null;
                   },
                   controller: _pwdController,
@@ -238,7 +241,7 @@ class _NewUserScreenState extends State<NewUserScreen> {
                 TextFormField(
                   obscureText: true,
                   decoration: InputDecoration(
-                    labelText: 'Confirmar Senha',
+                    labelText: t.confirmarSenha,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
@@ -254,22 +257,22 @@ class _NewUserScreenState extends State<NewUserScreen> {
                   ),
                   textInputAction: TextInputAction.done,
                   validator: (value) {
-                    if (value!.isEmpty) return 'Este campo é obrigatório.';
+                    if (value!.isEmpty) return t.esteCampoObrigatorio;
                     if (_pwdController.text != _confirmPwdController.text)
-                      return 'A senha e a confirmação não são iguais.';
+                      return t.senhaEConfirmaNaoIgual;
                     return null;
                   },
                   controller: _confirmPwdController,
                 ),
                 SizedBox(height: 10),
-                UserInfoFormList('Medicações', _medications, false),
-                UserInfoFormList('Vacinas', _conditions, false),
-                UserInfoFormList('Doenças', _vaccines, false),
+                UserInfoFormList(t.medicacoes, _medications, false),
+                UserInfoFormList(t.vacinas', _conditions, false),
+                UserInfoFormList(t.doencas, _vaccines, false),
                 Center(
                   child: _isLoading
                       ? CircularProgressIndicator()
                       : ElevatedButton(
-                          onPressed: _submit, child: Text('Cadastrar')),
+                          onPressed: _submit, child: t.cadastrar),
                 ),
                 SizedBox(height: 10),
               ],

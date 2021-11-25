@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class UserInfoFormList extends StatefulWidget {
   final String labelText;
@@ -19,6 +21,7 @@ class _UserInfoFormListState extends State<UserInfoFormList> {
 
   @override
   Widget build(BuildContext context) {
+	var t = AppLocalizations.of(context);
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -84,9 +87,9 @@ class _UserInfoFormListState extends State<UserInfoFormList> {
           widget.list.isEmpty
               ? Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: Text('Digite as ' +
+                  child: Text(t.digiteAs +
                       widget.labelText +
-                      ' que você estiver tomando e clique no \'+\' para adiciona-lo a lista.'),
+                      t.queEstiverUsando+" \"+\t.paraAdiconarLista),
                 )
               : ChipList(widget.list, !widget.readOnly, callback),
         ],

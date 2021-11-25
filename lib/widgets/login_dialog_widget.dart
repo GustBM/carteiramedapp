@@ -8,6 +8,7 @@ import 'package:carteiramedapp/screens/new_user_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../utils.dart';
 
@@ -21,6 +22,7 @@ class LoginDialog extends StatefulWidget {
 class _LoginDialogState extends State<LoginDialog> {
   @override
   Widget build(BuildContext context) {
+	var t = AppLocalizations.of(context);
     final GlobalKey<FormState> _formKey = GlobalKey();
     var _isLoading = false;
 
@@ -61,7 +63,7 @@ class _LoginDialogState extends State<LoginDialog> {
       padding: EdgeInsets.all(8.0),
       child: SimpleDialog(
         title: Text(
-          'Entre na sua conta',
+          t.entreNaConta,
           textAlign: TextAlign.center,
         ),
         children: [
@@ -93,7 +95,7 @@ class _LoginDialogState extends State<LoginDialog> {
                       keyboardType: TextInputType.number,
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return 'CPF inválido!';
+                          return t.invalidoCPF;
                         }
                         return null;
                       },
@@ -104,7 +106,7 @@ class _LoginDialogState extends State<LoginDialog> {
                     child: TextFormField(
                       controller: _pwdController,
                       decoration: InputDecoration(
-                        labelText: 'Senha',
+                        labelText: t.senha,
                         prefixIcon: Icon(Icons.lock_outline),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
@@ -123,10 +125,10 @@ class _LoginDialogState extends State<LoginDialog> {
                       obscureText: true,
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return 'Senha Obrigatória.';
+                          return t.senhaObrigatoria;
                         }
                         if (value.length < 6) {
-                          return 'Senha deve ser maior que 6 caracteres.';
+                          return t.senhaMaisQue6;
                         }
                         return null;
                       },
@@ -136,7 +138,7 @@ class _LoginDialogState extends State<LoginDialog> {
                   _isLoading
                       ? CircularProgressIndicator()
                       : ElevatedButton(
-                          child: Text('Entrar',
+                          child: Text(t.entrar,
                               style: TextStyle(color: Colors.white70)),
                           onPressed: _submit,
                         ),
@@ -144,7 +146,7 @@ class _LoginDialogState extends State<LoginDialog> {
                     height: 10,
                   ),
                   TextButton(
-                    child: Text('Não é cadastrado? Regitre-se aqui!'),
+                    child: Text(t.naoCadastrado),
                     onPressed: () {
                       Navigator.of(context).pop();
                       Navigator.of(context).pushNamed(NewUserScreen.routeName);

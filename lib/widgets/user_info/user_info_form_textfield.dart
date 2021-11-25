@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class UserInfoFormTextField extends StatelessWidget {
   final TextEditingController formController;
@@ -12,6 +14,7 @@ class UserInfoFormTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+	var t = AppLocalizations.of(context);
     if (initialValue != null) formController.text = initialValue!;
 
     var maskFormatter = new MaskTextInputFormatter(
@@ -36,7 +39,7 @@ class UserInfoFormTextField extends StatelessWidget {
       ),
       textInputAction: TextInputAction.done,
       validator: (value) {
-        if (value!.isEmpty) return 'Este campo é obrigatório.';
+        if (value!.isEmpty) return t.esteCampoObrigatorio;
         return null;
       },
       controller: formController,
