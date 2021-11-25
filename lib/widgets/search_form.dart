@@ -2,7 +2,7 @@ import 'package:carteiramedapp/screens/user_info_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:provider/provider.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:carteiramedapp/models/http_exception.dart';
 import 'package:carteiramedapp/providers/users_info.dart';
 
@@ -50,6 +50,7 @@ class _SearchFormState extends State<SearchForm> {
 
   @override
   Widget build(BuildContext context) {
+	var t = AppLocalizations.of(context);
     return Container(
       padding: EdgeInsets.all(16.0),
       child: Form(
@@ -59,11 +60,11 @@ class _SearchFormState extends State<SearchForm> {
             TextFormField(
               inputFormatters: [maskFormatter],
               decoration: InputDecoration(
-                  labelText: 'Busque por CPF', alignLabelWithHint: false),
+                  labelText: t.busquePorCPF, alignLabelWithHint: false),
               textInputAction: TextInputAction.done,
               textAlign: TextAlign.center,
               validator: (value) {
-                if (value!.isEmpty) return 'Preencha o campo com o CPF.';
+                if (value!.isEmpty) return t.preenchaCampoCPF;
                 return null;
               },
               controller: _inputController,
@@ -73,7 +74,7 @@ class _SearchFormState extends State<SearchForm> {
                 ? CircularProgressIndicator()
                 : ElevatedButton(
                     child:
-                        Text('Buscar', style: TextStyle(color: Colors.white70)),
+                        Text(t.buscar, style: TextStyle(color: Colors.white70)),
                     onPressed: _submit,
                   ),
           ],
