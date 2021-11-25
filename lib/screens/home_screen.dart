@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:carteiramedapp/screens/user_info_screen.dart';
 import 'package:carteiramedapp/widgets/login_dialog_widget.dart';
@@ -27,6 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final deviceWidth = MediaQuery.of(context).size.width;
     final primaryColor = Theme.of(context).primaryColor;
     final _user = FirebaseAuth.instance.currentUser;
+	var t = AppLocalizations.of(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -68,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      AppLocalizations.of(context).welcomeText;,
+                      text: t.welcomeText,
                       style: Theme.of(context).textTheme.headline4,
                       textAlign: TextAlign.center,
                     ),
