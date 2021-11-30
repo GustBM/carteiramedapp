@@ -53,6 +53,8 @@ class _LoginDialogState extends State<LoginDialog> {
         showWarningDialog(context, e.toString());
       } catch (e) {
         showWarningDialog(context, e.toString());
+      } finally {
+        Navigator.pop(context);
       }
       setState(() {
         _isLoading = false;

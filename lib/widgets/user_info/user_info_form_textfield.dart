@@ -14,7 +14,7 @@ class UserInfoFormTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var t = AppLocalizations.of(context);
-    if (initialValue != null) formController.text = initialValue!;
+    // if (initialValue != null) formController.text = initialValue!;
 
     var maskFormatter = new MaskTextInputFormatter(
         mask: '###.###.###-##', filter: {"#": RegExp(r'[0-9]')});

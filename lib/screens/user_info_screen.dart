@@ -82,6 +82,8 @@ class _UserInfoFormState extends State<UserInfoForm> {
   XFile? _imgFile;
   final ImagePicker _imgPicker = ImagePicker();
 
+  var isLoading = false;
+
   void _takePicture(ImageSource source) async {
     final pickedFile = await _imgPicker.pickImage(source: source);
     setState(() {
@@ -131,13 +133,15 @@ class _UserInfoFormState extends State<UserInfoForm> {
     );
   }
 
-  Widget _imageProfile() {
+  Widget _imageProfile(String? imgFile) {
     return Stack(
       children: [
         CircleAvatar(
             radius: 80.0,
             backgroundImage: _imgFile == null
-                ? Image.asset('assets/img/standard_user_img.png').image
+                ? imgFile == null
+                    ? Image.asset('assets/img/standard_user_img.png').image
+                    : Image.network(imgFile).image
                 : FileImage(File(_imgFile!.path))),
         Positioned(
           child: InkWell(
@@ -199,6 +203,12 @@ class _UserInfoFormState extends State<UserInfoForm> {
                 Provider.of<Notifications>(context)
                     .notifyUserOfAcess(userInfo.playerId!);
               }
+
+              _nameController.text = userInfo.name;
+              _emailController.text = userInfo.email;
+              _cpfController.text = userInfo.cpf;
+              _bthdayController.text = userInfo.birthDate;
+
               return Container(
                 padding: EdgeInsets.all(16.0),
                 child: Form(
@@ -220,7 +230,7 @@ class _UserInfoFormState extends State<UserInfoForm> {
                                               .image,
                                       maxRadius: 75,
                                     )
-                                  : _imageProfile(),
+                                  : _imageProfile(userInfo.imageUrl),
                             ),
                             Expanded(
                               child: Column(
@@ -264,31 +274,44 @@ class _UserInfoFormState extends State<UserInfoForm> {
                                                   MaterialStateProperty.all(
                                                       Colors.red),
                                             ),
-                                            onPressed: Provider.of<Auth>(
-                                                    context,
-                                                    listen: false)
-                                                .logout,
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                              Navigator.of(context)
+                                                  .pushReplacementNamed('/');
+                                              Provider.of<Auth>(context,
+                                                      listen: false)
+                                                  .logout();
+                                            },
                                             child: Text(t.sairConta))
                                       ]
                                     : [
-                                        ElevatedButton(
-                                            onPressed: () {
-                                              Provider.of<Auth>(context,
-                                                      listen: false)
-                                                  .updateUser(
-                                                      _cpfController.text,
-                                                      _nameController.text,
-                                                      _bthdayController.text,
-                                                      _emailController.text,
-                                                      File(_imgFile!.path),
-                                                      userInfo.medications,
-                                                      userInfo.conditions,
-                                                      userInfo.vaccines)
-                                                  .then((value) {
-                                                Navigator.pop(context);
-                                              });
-                                            },
-                                            child: Text(t.salvar)),
+                                        !isLoading
+                                            ? ElevatedButton(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    isLoading = true;
+                                                  });
+                                                  Provider.of<Auth>(context,
+                                                          listen: false)
+                                                      .updateUser(
+                                                          _cpfController.text,
+                                                          _nameController.text,
+                                                          _bthdayController
+                                                              .text,
+                                                          _emailController.text,
+                                                          _imgFile != null
+                                                              ? File(_imgFile!
+                                                                  .path)
+                                                              : null,
+                                                          userInfo.medications,
+                                                          userInfo.conditions,
+                                                          userInfo.vaccines)
+                                                      .then((value) {
+                                                    Navigator.pop(context);
+                                                  });
+                                                },
+                                                child: Text(t.salvar))
+                                            : CircularProgressIndicator(),
                                         SizedBox(height: 10),
                                         ElevatedButton(
                                             onPressed: _canEdit,
